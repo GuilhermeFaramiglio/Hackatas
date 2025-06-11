@@ -1,13 +1,13 @@
 <?php
 session_start();
-include_once("../config.php");
+include_once("utils/conectadb.php");
 
 $lang = $_SESSION["lang"] ?? "en";
-$labels = include "../lang/$lang.php";
+$labels = include "js/language.js/$lang.php";
 
 // Check if user is logged in
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
-    header("location: ../login.html");
+    header("location: login.html");
     exit;
 }
 
