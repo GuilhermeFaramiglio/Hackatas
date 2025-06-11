@@ -1,0 +1,35 @@
+<?php
+return [
+    "welcome" => "Welcome to MENA Freight Hub",
+    "login" => "Login",
+    "logout" => "Logout",
+    "company" => "Company",
+    "address" => "Address",
+    "vehicle" => "Vehicle",
+    "quote" => "Request a Quote",
+    "dashboard" => "Dashboard",
+    "companies" => "Companies",
+    "vehicles" => "Vehicles",
+    "quotes" => "Quotes",
+    "name" => "Name",
+    "email" => "Email",
+    "phone" => "Phone",
+    "type" => "Type",
+    "capacity" => "Capacity",
+    "plate" => "Plate/ID",
+    "origin" => "Origin",
+    "destination" => "Destination",
+    "start_date" => "Start Date",
+    "end_date" => "End Date",
+    "value" => "Value",
+    "actions" => "Actions",
+    "edit" => "Edit",
+    "delete" => "Delete",
+    "save" => "Save",
+    "cancel" => "Cancel",
+    "add_new" => "Add New",
+    "search" => "Search",
+    "total" => "Total"
+];
+?>
+

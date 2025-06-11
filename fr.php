@@ -1,0 +1,35 @@
+<?php
+return [
+    "welcome" => "Bienvenue sur MENA Freight Hub",
+    "login" => "Connexion",
+    "logout" => "Déconnexion",
+    "company" => "Entreprise",
+    "address" => "Adresse",
+    "vehicle" => "Véhicule",
+    "quote" => "Demander un devis",
+    "dashboard" => "Tableau de bord",
+    "companies" => "Entreprises",
+    "vehicles" => "Véhicules",
+    "quotes" => "Devis",
+    "name" => "Nom",
+    "email" => "Email",
+    "phone" => "Téléphone",
+    "type" => "Type",
+    "capacity" => "Capacité",
+    "plate" => "Plaque/ID",
+    "origin" => "Origine",
+    "destination" => "Destination",
+    "start_date" => "Date de début",
+    "end_date" => "Date de fin",
+    "value" => "Valeur",
+    "actions" => "Actions",
+    "edit" => "Modifier",
+    "delete" => "Supprimer",
+    "save" => "Enregistrer",
+    "cancel" => "Annuler",
+    "add_new" => "Ajouter nouveau",
+    "search" => "Rechercher",
+    "total" => "Total"
+];
+?>
+
