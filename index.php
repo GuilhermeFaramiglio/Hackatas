@@ -44,14 +44,14 @@ $result = mysqli_query($link, $sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Empresas - MENA Freight Hub</title>
-    <link rel="stylesheet" href="../assets/style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <header>
         <h1><?php echo $labels["company"]; ?></h1>
         <nav>
-            <a href="../dashboard.php">Dashboard</a>
-            <a href="../logout.php"><?php echo $labels["logout"]; ?></a>
+            <a href="dashboard.php">Dashboard</a>
+            <a href="logout.php"><?php echo $labels["logout"]; ?></a>
         </nav>
     </header>
     <main>

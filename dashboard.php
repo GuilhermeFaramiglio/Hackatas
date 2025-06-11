@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once("config.php");
+include_once("utils/conectadb.php");
 
 $lang = $_SESSION["lang"] ?? "en";
 $labels = include "lang/$lang.php";
