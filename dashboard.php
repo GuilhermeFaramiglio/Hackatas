@@ -1,47 +1,54 @@
 <?php
+
+include('utils/conectadb.php'); 
 session_start();
-include_once("utils/conectadb.php");
 
-$lang = $_SESSION["lang"] ?? "en";
-$labels = include "lang/$lang.php";
+if (isset($_SESSION['idusuario'])) {
 
-// Basic authentication (for demonstration purposes)
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST["email"];
-    $password = $_POST["password"];
+    $idusuario = $_SESSION['idusuario'];
 
-    // In a real application, you would query a database for user credentials
-    // and use password hashing.
-    if ($email == "test@example.com" && $password == "password") {
-        $_SESSION["loggedin"] = true;
-        $_SESSION["email"] = $email;
-    } else {
-        $login_err = "Invalid email or password.";
-    }
-}
+    $sql = "SELECT USU_NOME FROM usuario 
+        WHERE USU_ID = ?";
+    $stmt = mysqli_prepare($link, $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $idusuario);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $nomeusuario = mysqli_fetch_array($result)['USU_NOME'] ?? 'Usuário';
 
-if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
-    header("location: login.html");
+    mysqli_stmt_close($stmt);
+} 
+else {
+    echo "<script>alert('Usuário não logado!');</script>";
+    echo "<script>window.location.href = 'login.php';</script>";
     exit;
 }
 
-// Get some statistics
+$lang = $_SESSION["lang"] ?? "en";
+$labels = include "$lang.php";
+
+// Definir rótulos para localização
+$labels = [
+    "welcome" => "Bem-vindo ao Dashboard",
+    "logout" => "Sair"
+];
+
+// Obter algumas estatísticas
 $stats = [];
 
-// Count companies
+// Contar empresas
 $result = mysqli_query($link, "SELECT COUNT(*) as count FROM empresa");
 $stats['empresas'] = mysqli_fetch_array($result)['count'];
 
-// Count vehicles
+// Contar veículos
 $result = mysqli_query($link, "SELECT COUNT(*) as count FROM veiculo");
 $stats['veiculos'] = mysqli_fetch_array($result)['count'];
 
-// Count quotes
+// Contar orçamentos
 $result = mysqli_query($link, "SELECT COUNT(*) as count FROM orcamento");
 $stats['orcamentos'] = mysqli_fetch_array($result)['count'];
 
-// Total value of quotes
-$result = mysqli_query($link, "SELECT SUM(valor) as total FROM orcamento");
+// Valor total dos orçamentos
+$result = mysqli_query($link, "SELECT SUM(ORC_VALOR) as total FROM orcamento");
 $stats['valor_total'] = mysqli_fetch_array($result)['total'] ?? 0;
 ?>
 
@@ -51,7 +58,7 @@ $stats['valor_total'] = mysqli_fetch_array($result)['total'] ?? 0;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - MENA Freight Hub</title>
-    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <header>
@@ -65,7 +72,7 @@ $stats['valor_total'] = mysqli_fetch_array($result)['total'] ?? 0;
     </header>
     <main>
         <h2>Dashboard</h2>
-        <p>Bem-vindo, <?php echo $_SESSION["email"]; ?>!</p>
+        <p>Bem-vindo, <?php echo $_SESSION["idusuario"]; ?>!</p>
         
         <div class="language-selector">
             <a href="#" onclick="setLanguage('en')">EN</a> |
@@ -106,7 +113,7 @@ $stats['valor_total'] = mysqli_fetch_array($result)['total'] ?? 0;
             <a href="orcamentos/" class="button">Gerar Novo Orçamento</a>
         </div>
     </main>
-    <script src="scripts/language.js"></script>
+    <script src="js/language.js"></script>
 </body>
 </html>
 
