@@ -6,31 +6,57 @@ $lang = $_SESSION["lang"] ?? "en";
 $labels = include "$lang.php";
 
 if (isset($_SESSION['idusuario'])) {
-
     $idusuario = $_SESSION['idusuario'];
-
-    $sql = "SELECT USU_NOME FROM usuario 
-        WHERE USU_ID = ?";
+    $sql = "SELECT USU_NOME FROM usuario WHERE USU_ID = ?";
     $stmt = mysqli_prepare($link, $sql);
     mysqli_stmt_bind_param($stmt, 'i', $idusuario);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     $nomeusuario = mysqli_fetch_array($result)['USU_NOME'] ?? 'Usuário';
-
     mysqli_stmt_close($stmt);
-} 
-else {
+} else {
     echo "<script>alert('Usuário não logado!');</script>";
     echo "<script>window.location.href = 'login.php';</script>";
     exit;
 }
 
-// Handle form submission
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+// Handle delete
+if (isset($_POST["delete_id"])) {
+    $delete_id = intval($_POST["delete_id"]);
+    $sql = "DELETE FROM empresa WHERE emp_id = ?";
+    if ($stmt = mysqli_prepare($link, $sql)) {
+        mysqli_stmt_bind_param($stmt, "i", $delete_id);
+        if (mysqli_stmt_execute($stmt)) {
+            $success_msg = $labels["company_deleted"] ?? "Empresa excluída com sucesso!";
+        } else {
+            $error_msg = $labels["company_delete_error"] ?? "Erro ao excluir empresa.";
+        }
+        mysqli_stmt_close($stmt);
+    }
+}
+
+// Handle edit (update)
+if (isset($_POST["edit_id"]) && !empty($_POST["edit_id"])) {
+    $edit_id = intval($_POST["edit_id"]);
+    $edit_nome = $_POST["emp_nome"];
+    $edit_cnpj = $_POST["emp_cnpj"];
+    $edit_telefone = $_POST["emp_telefone"];
+    $sql = "UPDATE empresa SET emp_nome = ?, emp_cnpj = ?, emp_telefone = ? WHERE emp_id = ?";
+    if ($stmt = mysqli_prepare($link, $sql)) {
+        mysqli_stmt_bind_param($stmt, "sssi", $edit_nome, $edit_cnpj, $edit_telefone, $edit_id);
+        if (mysqli_stmt_execute($stmt)) {
+            $success_msg = $labels["company_updated"] ?? "Empresa atualizada com sucesso!";
+        } else {
+            $error_msg = $labels["company_update_error"] ?? "Erro ao atualizar empresa.";
+        }
+        mysqli_stmt_close($stmt);
+    }
+}
+// Handle insert (new)
+elseif ($_SERVER["REQUEST_METHOD"] == "POST" && empty($_POST["edit_id"]) && empty($_POST["delete_id"])) {
     $emp_nome = $_POST["emp_nome"];
     $emp_cnpj = $_POST["emp_cnpj"];
     $emp_telefone = $_POST["emp_telefone"];
-
     $sql = "INSERT INTO empresa (emp_nome, emp_cnpj, emp_telefone) VALUES (?, ?, ?)";
     if ($stmt = mysqli_prepare($link, $sql)) {
         mysqli_stmt_bind_param($stmt, "sss", $emp_nome, $emp_cnpj, $emp_telefone);
@@ -55,6 +81,30 @@ $result = mysqli_query($link, $sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Empresas - MENA Freight Hub</title>
     <link rel="stylesheet" href="css/style.css">
+    <script>
+    // Preenche o formulário ao clicar em Editar
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.edit-btn').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('emp_nome').value = this.dataset.nome;
+                document.getElementById('emp_cnpj').value = this.dataset.cnpj;
+                document.getElementById('emp_telefone').value = this.dataset.telefone;
+                document.getElementById('edit_id').value = this.dataset.id;
+                document.getElementById('submit-btn').textContent = '<?php echo $labels["edit"] ?? "Editar"; ?>';
+            });
+        });
+        // Limpa o formulário ao cadastrar novo
+        document.getElementById('clear-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('emp_nome').value = '';
+            document.getElementById('emp_cnpj').value = '';
+            document.getElementById('emp_telefone').value = '';
+            document.getElementById('edit_id').value = '';
+            document.getElementById('submit-btn').textContent = '<?php echo $labels["company_register_btn"] ?? "Cadastrar Empresa"; ?>';
+        });
+    });
+    </script>
 </head>
 <body>
     <header>
@@ -75,20 +125,22 @@ $result = mysqli_query($link, $sql);
             <div class="error"><?php echo $error_msg; ?></div>
         <?php endif; ?>
         
-        <form method="POST">
+        <form method="POST" id="empresa-form">
+            <input type="hidden" name="edit_id" id="edit_id">
             <div class="form-group">
                 <label for="emp_nome"><?php echo $labels["company_name"] ?? "Nome da Empresa:"; ?></label>
                 <input type="text" id="emp_nome" name="emp_nome" required>
             </div>
             <div class="form-group">
-                <label for="emp_cnpj"><?php echo $labels["company_cnpj"] ?? "CNPJ/ID:"; ?></label>
+                <label for="emp_cnpj"><?php echo $labels["company_cnpj"] ?? "CNPJ:"; ?></label>
                 <input type="text" id="emp_cnpj" name="emp_cnpj" required>
             </div>
             <div class="form-group">
                 <label for="emp_telefone"><?php echo $labels["company_phone"] ?? "Telefone:"; ?></label>
                 <input type="text" id="emp_telefone" name="emp_telefone" required>
             </div>
-            <button type="submit"><?php echo $labels["company_register_btn"] ?? "Cadastrar Empresa"; ?></button>
+            <button type="submit" id="submit-btn"><?php echo $labels["company_register_btn"] ?? "Cadastrar Empresa"; ?></button>
+            <button id="clear-btn"><?php echo $labels["clear"] ?? "Limpar"; ?></button>
         </form>
         
         <h3><?php echo $labels["company_list"] ?? "Empresas Cadastradas"; ?></h3>
@@ -99,18 +151,31 @@ $result = mysqli_query($link, $sql);
                     <th><?php echo $labels["company_name"] ?? "Nome"; ?></th>
                     <th><?php echo $labels["company_cnpj"] ?? "CNPJ/ID"; ?></th>
                     <th><?php echo $labels["company_phone"] ?? "Telefone"; ?></th>
+                    <th><?php echo $labels["actions"] ?? "Ações"; ?></th>
                 </tr>
             </thead>
             <tbody>
                 <?php while ($row = mysqli_fetch_assoc($result)): ?>
                 <tr>
                     <td><?php echo $row["emp_id"]; ?></td>
-                    <td><?php echo $row["emp_nome"]; ?></td>
-                    <td><?php echo $row["emp_cnpj"]; ?></td>
-                    <td><?php echo $row["emp_telefone"]; ?></td>
+                    <td><?php echo htmlspecialchars($row["emp_nome"]); ?></td>
+                    <td><?php echo htmlspecialchars($row["emp_cnpj"]); ?></td>
+                    <td><?php echo htmlspecialchars($row["emp_telefone"]); ?></td>
                     <td>
-                        <a href="edit_empresa.php?id=<?php echo $row["emp_id"]; ?>"><?php echo $labels["edit"] ?? "Editar"; ?></a>
-                        <a href="delete_empresa.php?id=<?php echo $row["emp_id"]; ?>" onclick="return confirm('<?php echo $labels["confirm_delete"] ?? "Tem certeza?"; ?>')"><?php echo $labels["delete"] ?? "Excluir"; ?></a>
+                        <button class="edit-btn" 
+                            type="button"
+                            data-id="<?php echo $row["emp_id"]; ?>" 
+                            data-nome="<?php echo htmlspecialchars($row["emp_nome"]); ?>" 
+                            data-cnpj="<?php echo htmlspecialchars($row["emp_cnpj"]); ?>" 
+                            data-telefone="<?php echo htmlspecialchars($row["emp_telefone"]); ?>">
+                            <?php echo $labels["edit"] ?? "Editar"; ?>
+                        </button>
+                        <form method="POST" class="delete-form" style="display:inline;">
+                            <input type="hidden" name="delete_id" value="<?php echo $row["emp_id"]; ?>">
+                            <button type="submit" onclick="return confirm('<?php echo $labels["confirm_delete"] ?? "Tem certeza?"; ?>')">
+                                <?php echo $labels["delete"] ?? "Excluir"; ?>
+                            </button>
+                        </form>
                     </td>
                 </tr>
                 <?php endwhile; ?>
