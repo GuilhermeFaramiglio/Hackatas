@@ -26,12 +26,6 @@ else {
 $lang = $_SESSION["lang"] ?? "en";
 $labels = include "$lang.php";
 
-// Definir rótulos para localização
-$labels = [
-    "welcome" => "Bem-vindo ao Dashboard",
-    "logout" => "Sair"
-];
-
 // Obter algumas estatísticas
 $stats = [];
 
@@ -64,9 +58,6 @@ $stats['valor_total'] = mysqli_fetch_array($result)['total'] ?? 0;
     <header>
         <h1><?php echo $labels["welcome"]; ?></h1>
         <nav>
-            <a href="cadempresa.php">Empresas</a>
-            <a href="#">Veículos</a>
-            <a href="#">Orçamentos</a>
             <a href="logout.php"><?php echo $labels["logout"]; ?></a>
         </nav>
     </header>
@@ -108,9 +99,9 @@ $stats['valor_total'] = mysqli_fetch_array($result)['total'] ?? 0;
         
         <div class="quick-actions">
             <h3>Ações Rápidas</h3>
-            <a href="clientes/" class="button">Cadastrar Nova Empresa</a>
-            <a href="veiculos/" class="button">Cadastrar Novo Veículo</a>
-            <a href="orcamentos/" class="button">Gerar Novo Orçamento</a>
+            <a href="cadempresa.php" class="button">Cadastrar Nova Empresa</a>
+            <a href="#" class="button">Cadastrar Novo Veículo</a>
+            <a href="#" class="button">Gerar Novo Orçamento</a>
         </div>
     </main>
     <script src="js/language.js"></script>

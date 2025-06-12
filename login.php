@@ -3,6 +3,9 @@
 include('utils/conectadb.php');
 session_start();
 
+$lang = $_SESSION["lang"] ?? "en";
+$labels = include "$lang.php";
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $usuario = $_POST['txtUsuario'];
     $senha = $_POST['txtSenha'];
