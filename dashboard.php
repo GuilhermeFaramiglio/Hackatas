@@ -68,18 +68,52 @@ $stats['valor_total'] = mysqli_fetch_array($result)['total'] ?? 0;
             <a href="#">Veículos</a>
             <a href="#">Orçamentos</a>
             <a href="logout.php"><?php echo $labels["logout"]; ?></a>
+
+            <div class="seletor-idioma">
+                <div class="idioma-atual">
+                    <span><?php echo strtoupper($lang); ?></span>
+                    <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="menu-idiomas">
+                    <a href="#" onclick="setLanguage('en')"><img src="img/eng.webp" height="25px" width="25px">EN</a>
+                    <a href="#" onclick="setLanguage('ar')"><img src="img/arabe.webp" height="25px" width="25px">AR</a>
+                    <a href="#" onclick="setLanguage('fr')"><img src="img/France_Flag.PNG.webp" height="25px" width="25px">FR</a>
+                </div>
+            </div>          
         </nav>
+
+
     </header>
     <main>
         <h2>Dashboard</h2>
         <p>Bem-vindo, <?php echo $_SESSION["idusuario"]; ?>!</p>
-        
-        <div class="language-selector">
-            <a href="#" onclick="setLanguage('en')">EN</a> |
-            <a href="#" onclick="setLanguage('ar')">AR</a> |
-            <a href="#" onclick="setLanguage('fr')">FR</a>
+
+    <div class="carrossel-container">
+        <div class="carrossel">
+            <div class="slides">
+                <div class="slide">
+                    <img src="img/volvo.jpg" height="250px" width="250px" alt="Caminhão">
+                </div>
+                <div class="slide">
+                    <img src="img/scania.jpg" height="250px" width="250px" alt="Caminhão">
+                </div>
+                <div class="slide">
+                    <img src="img/volvo.jpg" height="250px" width="250px" alt="Caminhão">
+                </div>
+                <div class="slide">
+                    <img src="img/scania.jpg" height="250px" width="250px" alt="Caminhão">
+                </div>
+                <div class="slide">
+                    <img src="img/volvo.jpg" height="250px" width="250px" alt="Caminhão">
+                </div>
+                <div class="slide">
+                    <img src="img/scania.jpg" height="250px" width="250px" alt="Caminhão">
+                </div>
+            </div>
         </div>
-        
+    </div>
         <div class="stats-grid">
             <div class="stat-card">
                 <h3>Empresas Cadastradas</h3>
