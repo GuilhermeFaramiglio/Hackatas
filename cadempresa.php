@@ -2,7 +2,7 @@
 include("utils/conectadb.php");
 session_start();
 
-$lang = $_SESSION["lang"] ?? "en";
+$lang = $_COOKIE["lang"] ?? "en";
 $labels = include "$lang.php";
 
 if (isset($_SESSION['idusuario'])) {
@@ -82,8 +82,10 @@ $result = mysqli_query($link, $sql);
     <title>Empresas - MENA Freight Hub</title>
     <link rel="stylesheet" href="css/style.css">
     <script>
-    // Preenche o formulário ao clicar em Editar
     document.addEventListener('DOMContentLoaded', function() {
+        const defaultSubmitText = '<?php echo $labels["register_company_btn"] ?? "Cadastrar Empresa"; ?>';
+        const editSubmitText = '<?php echo $labels["edit"] ?? "Editar"; ?>';
+
         document.querySelectorAll('.edit-btn').forEach(function(btn) {
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -91,20 +93,19 @@ $result = mysqli_query($link, $sql);
                 document.getElementById('emp_cnpj').value = this.dataset.cnpj;
                 document.getElementById('emp_telefone').value = this.dataset.telefone;
                 document.getElementById('edit_id').value = this.dataset.id;
-                document.getElementById('submit-btn').textContent = '<?php echo $labels["edit"] ?? "Editar"; ?>';
+                document.getElementById('submit-btn').textContent = editSubmitText;
             });
         });
-        // Limpa o formulário ao cadastrar novo
+
         document.getElementById('clear-btn').addEventListener('click', function(e) {
             e.preventDefault();
-            document.getElementById('emp_nome').value = '';
-            document.getElementById('emp_cnpj').value = '';
-            document.getElementById('emp_telefone').value = '';
+            document.getElementById('empresa-form').reset(); 
             document.getElementById('edit_id').value = '';
-            document.getElementById('submit-btn').textContent = '<?php echo $labels["company_register_btn"] ?? "Cadastrar Empresa"; ?>';
+            document.getElementById('submit-btn').textContent = defaultSubmitText;
         });
     });
-    </script>
+</script>
+   
 </head>
 <body>
     <header>
@@ -114,73 +115,73 @@ $result = mysqli_query($link, $sql);
             <a href="logout.php"><?php echo $labels["logout"]; ?></a>
         </nav>
     </header>
-    <main>
-        <h2><?php echo $labels["company_register"] ?? "Cadastro de Empresas"; ?></h2>
-        
-        <?php if (isset($success_msg)): ?>
-            <div class="success"><?php echo $success_msg; ?></div>
-        <?php endif; ?>
-        
-        <?php if (isset($error_msg)): ?>
-            <div class="error"><?php echo $error_msg; ?></div>
-        <?php endif; ?>
-        
-        <form method="POST" id="empresa-form">
-            <input type="hidden" name="edit_id" id="edit_id">
-            <div class="form-group">
-                <label for="emp_nome"><?php echo $labels["company_name"] ?? "Nome da Empresa:"; ?></label>
-                <input type="text" id="emp_nome" name="emp_nome" required>
-            </div>
-            <div class="form-group">
-                <label for="emp_cnpj"><?php echo $labels["company_cnpj"] ?? "CNPJ:"; ?></label>
-                <input type="text" id="emp_cnpj" name="emp_cnpj" required>
-            </div>
-            <div class="form-group">
-                <label for="emp_telefone"><?php echo $labels["company_phone"] ?? "Telefone:"; ?></label>
-                <input type="text" id="emp_telefone" name="emp_telefone" required>
-            </div>
-            <button type="submit" id="submit-btn"><?php echo $labels["company_register_btn"] ?? "Cadastrar Empresa"; ?></button>
-            <button id="clear-btn"><?php echo $labels["clear"] ?? "Limpar"; ?></button>
-        </form>
-        
-        <h3><?php echo $labels["company_list"] ?? "Empresas Cadastradas"; ?></h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th><?php echo $labels["company_name"] ?? "Nome"; ?></th>
-                    <th><?php echo $labels["company_cnpj"] ?? "CNPJ/ID"; ?></th>
-                    <th><?php echo $labels["company_phone"] ?? "Telefone"; ?></th>
-                    <th><?php echo $labels["actions"] ?? "Ações"; ?></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($row = mysqli_fetch_assoc($result)): ?>
-                <tr>
-                    <td><?php echo $row["emp_id"]; ?></td>
-                    <td><?php echo htmlspecialchars($row["emp_nome"]); ?></td>
-                    <td><?php echo htmlspecialchars($row["emp_cnpj"]); ?></td>
-                    <td><?php echo htmlspecialchars($row["emp_telefone"]); ?></td>
-                    <td>
-                        <button class="edit-btn" 
-                            type="button"
-                            data-id="<?php echo $row["emp_id"]; ?>" 
-                            data-nome="<?php echo htmlspecialchars($row["emp_nome"]); ?>" 
-                            data-cnpj="<?php echo htmlspecialchars($row["emp_cnpj"]); ?>" 
-                            data-telefone="<?php echo htmlspecialchars($row["emp_telefone"]); ?>">
-                            <?php echo $labels["edit"] ?? "Editar"; ?>
+   <main>
+    <h2><?php echo $labels["company_registration"] ?? "Cadastro de Empresas"; ?></h2>
+    
+    <?php if (isset($success_msg)): ?>
+        <div class="success"><?php echo $success_msg; ?></div>
+    <?php endif; ?>
+    
+    <?php if (isset($error_msg)): ?>
+        <div class="error"><?php echo $error_msg; ?></div>
+    <?php endif; ?>
+    
+    <form method="POST" id="empresa-form">
+        <input type="hidden" name="edit_id" id="edit_id">
+        <div class="form-group">
+            <label for="emp_nome"><?php echo $labels["company_name_label"] ?? "Nome da Empresa:"; ?></label>
+            <input type="text" id="emp_nome" name="emp_nome" required>
+        </div>
+        <div class="form-group">
+            <label for="emp_cnpj"><?php echo $labels["company_cnpj_label"] ?? "CNPJ:"; ?></label>
+            <input type="text" id="emp_cnpj" name="emp_cnpj" required>
+        </div>
+        <div class="form-group">
+            <label for="emp_telefone"><?php echo $labels["company_phone_label"] ?? "Telefone:"; ?></label>
+            <input type="text" id="emp_telefone" name="emp_telefone" required>
+        </div>
+        <button type="submit" id="submit-btn"><?php echo $labels["register_company_btn"] ?? "Cadastrar Empresa"; ?></button>
+        <button type="button" id="clear-btn"><?php echo $labels["clear_btn"] ?? "Limpar"; ?></button>
+    </form>
+    
+    <h3><?php echo $labels["registered_companies_list"] ?? "Empresas Cadastradas"; ?></h3>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th><?php echo $labels["name"] ?? "Nome"; ?></th>
+                <th><?php echo $labels["cnpj_id_header"] ?? "CNPJ/ID"; ?></th>
+                <th><?php echo $labels["phone"] ?? "Telefone"; ?></th>
+                <th><?php echo $labels["actions"] ?? "Ações"; ?></th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php while ($row = mysqli_fetch_assoc($result)): ?>
+            <tr>
+                <td><?php echo $row["emp_id"]; ?></td>
+                <td><?php echo htmlspecialchars($row["emp_nome"]); ?></td>
+                <td><?php echo htmlspecialchars($row["emp_cnpj"]); ?></td>
+                <td><?php echo htmlspecialchars($row["emp_telefone"]); ?></td>
+                <td>
+                    <button class="edit-btn" 
+                        type="button"
+                        data-id="<?php echo $row["emp_id"]; ?>" 
+                        data-nome="<?php echo htmlspecialchars($row["emp_nome"]); ?>" 
+                        data-cnpj="<?php echo htmlspecialchars($row["emp_cnpj"]); ?>" 
+                        data-telefone="<?php echo htmlspecialchars($row["emp_telefone"]); ?>">
+                        <?php echo $labels["edit"] ?? "Editar"; ?>
+                    </button>
+                    <form method="POST" class="delete-form" style="display:inline;">
+                        <input type="hidden" name="delete_id" value="<?php echo $row["emp_id"]; ?>">
+                        <button type="submit" onclick="return confirm('<?php echo $labels["confirm_delete_message"] ?? "Tem certeza?"; ?>')">
+                            <?php echo $labels["delete"] ?? "Excluir"; ?>
                         </button>
-                        <form method="POST" class="delete-form" style="display:inline;">
-                            <input type="hidden" name="delete_id" value="<?php echo $row["emp_id"]; ?>">
-                            <button type="submit" onclick="return confirm('<?php echo $labels["confirm_delete"] ?? "Tem certeza?"; ?>')">
-                                <?php echo $labels["delete"] ?? "Excluir"; ?>
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
-    </main>
+                    </form>
+                </td>
+            </tr>
+            <?php endwhile; ?>
+        </tbody>
+    </table>
+</main>
 </body>
 </html>

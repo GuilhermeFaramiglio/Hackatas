@@ -1,5 +1,6 @@
 <?php
 return [
+    // --- Chaves Originais ---
     "welcome" => "Welcome to MENA Freight Hub",
     "login" => "Login",
     "logout" => "Logout",
@@ -29,7 +30,44 @@ return [
     "cancel" => "Cancel",
     "add_new" => "Add New",
     "search" => "Search",
-    "total" => "Total"
+    "total" => "Total",
+
+    // --- Novas Chaves (Login) ---
+    "username_placeholder" => "Username",
+    "password_placeholder" => "Password",
+    "login_button" => "Login",
+    "login_error" => "Incorrect username or password!",
+
+    // --- Novas Chaves (Dashboard) ---
+    "welcome_user" => "Welcome",
+    "registered_companies" => "Registered Companies",
+    "manage_companies" => "Manage Companies",
+    "registered_vehicles" => "Registered Vehicles",
+    "manage_vehicles" => "Manage Vehicles",
+    "generated_quotes" => "Generated Quotes",
+    "manage_quotes" => "Manage Quotes",
+    "total_value" => "Total Value",
+    "view_reports" => "View Reports",
+    "quick_actions" => "Quick Actions",
+    "add_new_company" => "Add New Company",
+    "add_new_vehicle" => "Add New Vehicle",
+    "add_new_quote" => "Generate New Quote",
+
+    // --- Novas Chaves (cadempresa.php) ---
+    "company_registration" => "Company Registration",
+    "company_name_label" => "Company Name:",
+    "company_cnpj_label" => "CNPJ/Tax ID:",
+    "company_phone_label" => "Phone:",
+    "register_company_btn" => "Register Company",
+    "clear_btn" => "Clear",
+    "registered_companies_list" => "Registered Companies",
+    "cnpj_id_header" => "CNPJ/ID",
+    "confirm_delete_message" => "Are you sure?",
+    "company_registered" => "Company registered successfully!",
+    "company_error" => "Error registering company.",
+    "company_updated" => "Company updated successfully!",
+    "company_update_error" => "Error updating company.",
+    "company_deleted" => "Company deleted successfully!",
+    "company_delete_error" => "Error deleting company."
 ];
 ?>
-

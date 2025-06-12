@@ -1,29 +1,20 @@
 <?php
 
-include('utils/conectadb.php'); 
+include('utils/conectadb.php');
 session_start();
 
-if (isset($_SESSION['idusuario'])) {
-
+if (isset($_SESSION['idusuario']) && isset($_SESSION['nomeusuario'])) {
+    // Pega as informações diretamente da sessão, sem precisar de nova consulta ao banco
     $idusuario = $_SESSION['idusuario'];
-
-    $sql = "SELECT USU_NOME FROM usuario 
-        WHERE USU_ID = ?";
-    $stmt = mysqli_prepare($link, $sql);
-    mysqli_stmt_bind_param($stmt, 'i', $idusuario);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-    $nomeusuario = mysqli_fetch_array($result)['USU_NOME'] ?? 'Usuário';
-
-    mysqli_stmt_close($stmt);
-} 
-else {
+    $nomeusuario = $_SESSION['nomeusuario'];
+}  else {
     echo "<script>alert('Usuário não logado!');</script>";
     echo "<script>window.location.href = 'login.php';</script>";
     exit;
 }
 
-$lang = $_SESSION["lang"] ?? "en";
+// Carrega o idioma a partir do cookie, com 'en' como padrão
+$lang = $_COOKIE["lang"] ?? "en";
 $labels = include "$lang.php";
 
 // Obter algumas estatísticas
@@ -51,7 +42,7 @@ $stats['valor_total'] = mysqli_fetch_array($result)['total'] ?? 0;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - MENA Freight Hub</title>
+    <title><?php echo $labels['dashboard']; ?> - MENA Freight Hub</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -74,71 +65,69 @@ $stats['valor_total'] = mysqli_fetch_array($result)['total'] ?? 0;
                 </div>
             </div>          
         </nav>
-
-
     </header>
     <main>
-        <h2>Dashboard</h2>
-        <p>Bem-vindo, <?php echo $_SESSION["idusuario"]; ?>!</p>
+        <h2><?php echo $labels["dashboard"]; ?></h2>
+        <p><?php echo $labels["welcome_user"]; ?>, <?php echo htmlspecialchars($nomeusuario); ?>!</p>
 
-    <div class="carrossel-container">
-        <div class="carrossel">
-            <div class="slides">
-                <div class="slide">
-                    <img src="img/volvo.jpg" height="250px" width="250px" alt="Caminhão">
-                </div>
-                <div class="slide">
-                    <img src="img/scania.jpg" height="250px" width="250px" alt="Caminhão">
-                </div>
-                <div class="slide">
-                    <img src="img/volvo.jpg" height="250px" width="250px" alt="Caminhão">
-                </div>
-                <div class="slide">
-                    <img src="img/scania.jpg" height="250px" width="250px" alt="Caminhão">
-                </div>
-                <div class="slide">
-                    <img src="img/volvo.jpg" height="250px" width="250px" alt="Caminhão">
-                </div>
-                <div class="slide">
-                    <img src="img/scania.jpg" height="250px" width="250px" alt="Caminhão">
+        <div class="carrossel-container">
+            <div class="carrossel">
+                <div class="slides">
+                    <div class="slide">
+                        <img src="img/volvo.jpg" height="250px" width="250px" alt="Caminhão">
+                    </div>
+                    <div class="slide">
+                        <img src="img/scania.jpg" height="250px" width="250px" alt="Caminhão">
+                    </div>
+                    <div class="slide">
+                        <img src="img/volvo.jpg" height="250px" width="250px" alt="Caminhão">
+                    </div>
+                    <div class="slide">
+                        <img src="img/scania.jpg" height="250px" width="250px" alt="Caminhão">
+                    </div>
+                    <div class="slide">
+                        <img src="img/volvo.jpg" height="250px" width="250px" alt="Caminhão">
+                    </div>
+                    <div class="slide">
+                        <img src="img/scania.jpg" height="250px" width="250px" alt="Caminhão">
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+
         <div class="stats-grid">
             <div class="stat-card">
-                <h3>Empresas Cadastradas</h3>
+                <h3><?php echo $labels["registered_companies"]; ?></h3>
                 <p class="stat-number"><?php echo $stats['empresas']; ?></p>
-                <a href="cadempresa.php" class="button">Gerenciar Empresas</a>
+                <a href="cadempresa.php" class="button"><?php echo $labels["manage_companies"]; ?></a>
             </div>
             
             <div class="stat-card">
-                <h3>Veículos Cadastrados</h3>
+                <h3><?php echo $labels["registered_vehicles"]; ?></h3>
                 <p class="stat-number"><?php echo $stats['veiculos']; ?></p>
-                <a href="veiculos/" class="button">Gerenciar Veículos</a>
+                <a href="veiculos/" class="button"><?php echo $labels["manage_vehicles"]; ?></a>
             </div>
             
             <div class="stat-card">
-                <h3>Orçamentos Gerados</h3>
+                <h3><?php echo $labels["generated_quotes"]; ?></h3>
                 <p class="stat-number"><?php echo $stats['orcamentos']; ?></p>
-                <a href="orcamentos/" class="button">Gerenciar Orçamentos</a>
+                <a href="orcamentos/" class="button"><?php echo $labels["manage_quotes"]; ?></a>
             </div>
             
             <div class="stat-card">
-                <h3>Valor Total</h3>
+                <h3><?php echo $labels["total_value"]; ?></h3>
                 <p class="stat-number">$<?php echo number_format($stats['valor_total'], 2); ?></p>
-                <a href="orcamentos/" class="button">Ver Relatórios</a>
+                <a href="orcamentos/" class="button"><?php echo $labels["view_reports"]; ?></a>
             </div>
         </div>
         
         <div class="quick-actions">
-            <h3>Ações Rápidas</h3>
-            <a href="cadempresa.php" class="button">Cadastrar Nova Empresa</a>
-            <a href="#" class="button">Cadastrar Novo Veículo</a>
-            <a href="#" class="button">Gerar Novo Orçamento</a>
+            <h3><?php echo $labels["quick_actions"]; ?></h3>
+            <a href="cadempresa.php" class="button"><?php echo $labels["add_new_company"]; ?></a>
+            <a href="#" class="button"><?php echo $labels["add_new_vehicle"]; ?></a>
+            <a href="#" class="button"><?php echo $labels["add_new_quote"]; ?></a>
         </div>
     </main>
     <script src="js/language.js"></script>
 </body>
 </html>
-

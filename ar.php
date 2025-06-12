@@ -1,5 +1,6 @@
 <?php
 return [
+    // --- Chaves Originais ---
     "welcome" => "مرحبًا بكم في مركز شحن الشرق الأوسط وشمال إفريقيا",
     "login" => "تسجيل الدخول",
     "logout" => "تسجيل الخروج",
@@ -29,7 +30,44 @@ return [
     "cancel" => "إلغاء",
     "add_new" => "إضافة جديد",
     "search" => "بحث",
-    "total" => "المجموع"
+    "total" => "المجموع",
+
+    // --- Novas Chaves (Login) ---
+    "username_placeholder" => "اسم المستخدم",
+    "password_placeholder" => "كلمة المرور",
+    "login_button" => "دخول",
+    "login_error" => "اسم المستخدم أو كلمة المرور غير صحيحة!",
+
+    // --- Novas Chaves (Dashboard) ---
+    "welcome_user" => "أهلاً بك",
+    "registered_companies" => "الشركات المسجلة",
+    "manage_companies" => "إدارة الشركات",
+    "registered_vehicles" => "المركبات المسجلة",
+    "manage_vehicles" => "إدارة المركبات",
+    "generated_quotes" => "عروض الأسعار التي تم إنشاؤها",
+    "manage_quotes" => "إدارة عروض الأسعار",
+    "total_value" => "القيمة الإجمالية",
+    "view_reports" => "عرض التقارير",
+    "quick_actions" => "إجراءات سريعة",
+    "add_new_company" => "إضافة شركة جديدة",
+    "add_new_vehicle" => "إضافة مركبة جديدة",
+    "add_new_quote" => "إنشاء عرض أسعار جديد",
+
+    // --- Novas Chaves (cadempresa.php) ---
+    "company_registration" => "تسجيل الشركات",
+    "company_name_label" => "اسم الشركة:",
+    "company_cnpj_label" => "الرقم الضريبي/المعرف:",
+    "company_phone_label" => "الهاتف:",
+    "register_company_btn" => "تسجيل الشركة",
+    "clear_btn" => "مسح",
+    "registered_companies_list" => "الشركات المسجلة",
+    "cnpj_id_header" => "المعرف/الرقم الضريبي",
+    "confirm_delete_message" => "هل أنت متأكد؟",
+    "company_registered" => "تم تسجيل الشركة بنجاح!",
+    "company_error" => "خطأ في تسجيل الشركة.",
+    "company_updated" => "تم تحديث الشركة بنجاح!",
+    "company_update_error" => "خطأ في تحديث الشركة.",
+    "company_deleted" => "تم حذف الشركة بنجاح!",
+    "company_delete_error" => "خطأ في حذف الشركة."
 ];
 ?>
-

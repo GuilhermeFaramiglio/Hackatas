@@ -1,5 +1,6 @@
 <?php
 return [
+    // --- Chaves Originais ---
     "welcome" => "Bienvenue sur MENA Freight Hub",
     "login" => "Connexion",
     "logout" => "Déconnexion",
@@ -29,7 +30,44 @@ return [
     "cancel" => "Annuler",
     "add_new" => "Ajouter nouveau",
     "search" => "Rechercher",
-    "total" => "Total"
+    "total" => "Total",
+    
+    // --- Novas Chaves (Login) ---
+    "username_placeholder" => "Nom d'utilisateur",
+    "password_placeholder" => "Mot de passe",
+    "login_button" => "Se connecter",
+    "login_error" => "Nom d'utilisateur ou mot de passe incorrect !",
+
+    // --- Novas Chaves (Dashboard) ---
+    "welcome_user" => "Bienvenue",
+    "registered_companies" => "Entreprises Enregistrées",
+    "manage_companies" => "Gérer les Entreprises",
+    "registered_vehicles" => "Véhicules Enregistrés",
+    "manage_vehicles" => "Gérer les Véhicules",
+    "generated_quotes" => "Devis Générés",
+    "manage_quotes" => "Gérer les Devis",
+    "total_value" => "Valeur Totale",
+    "view_reports" => "Voir les Rapports",
+    "quick_actions" => "Actions Rapides",
+    "add_new_company" => "Ajouter une Nouvelle Entreprise",
+    "add_new_vehicle" => "Ajouter un Nouveau Véhicule",
+    "add_new_quote" => "Générer un Nouveau Devis",
+    
+    // --- Novas Chaves (cadempresa.php) ---
+    "company_registration" => "Enregistrement des Entreprises",
+    "company_name_label" => "Nom de l'Entreprise :",
+    "company_cnpj_label" => "N° d'Identification Fiscale :",
+    "company_phone_label" => "Téléphone :",
+    "register_company_btn" => "Enregistrer l'Entreprise",
+    "clear_btn" => "Effacer",
+    "registered_companies_list" => "Liste des Entreprises",
+    "cnpj_id_header" => "ID/N° Fiscal",
+    "confirm_delete_message" => "Êtes-vous sûr ?",
+    "company_registered" => "Entreprise enregistrée avec succès !",
+    "company_error" => "Erreur lors de l'enregistrement.",
+    "company_updated" => "Entreprise mise à jour avec succès !",
+    "company_update_error" => "Erreur de mise à jour.",
+    "company_deleted" => "Entreprise supprimée avec succès !",
+    "company_delete_error" => "Erreur de suppression."
 ];
 ?>
-
