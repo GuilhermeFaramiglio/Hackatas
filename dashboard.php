@@ -64,9 +64,9 @@ $stats['valor_total'] = mysqli_fetch_array($result)['total'] ?? 0;
     <header>
         <h1><?php echo $labels["welcome"]; ?></h1>
         <nav>
-            <a href="clientes/">Empresas</a>
-            <a href="veiculos/">Veículos</a>
-            <a href="orcamentos/">Orçamentos</a>
+            <a href="cadempresa.php">Empresas</a>
+            <a href="#">Veículos</a>
+            <a href="#">Orçamentos</a>
             <a href="logout.php"><?php echo $labels["logout"]; ?></a>
         </nav>
     </header>
@@ -84,7 +84,7 @@ $stats['valor_total'] = mysqli_fetch_array($result)['total'] ?? 0;
             <div class="stat-card">
                 <h3>Empresas Cadastradas</h3>
                 <p class="stat-number"><?php echo $stats['empresas']; ?></p>
-                <a href="clientes/" class="button">Gerenciar Empresas</a>
+                <a href="cadempresa.php" class="button">Gerenciar Empresas</a>
             </div>
             
             <div class="stat-card">
