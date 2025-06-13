@@ -44,6 +44,7 @@ $stats['valor_total'] = mysqli_fetch_array($result)['total'] ?? 0;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $labels['dashboard']; ?> - MENA Freight Hub</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
 <body style="background-size: cover; background-attachment: fixed; background-image: url('img/marcasp.png');">
     <header>
@@ -70,30 +71,23 @@ $stats['valor_total'] = mysqli_fetch_array($result)['total'] ?? 0;
         <h2><?php echo $labels["dashboard"]; ?></h2>
         <p><?php echo $labels["welcome_user"]; ?>, <?php echo htmlspecialchars($nomeusuario); ?>!</p>
 
-        <div class="carrossel-container">
-            <div class="carrossel">
-                <div class="slides">
-                    <div class="slide">
-                        <img src="img/volvo.jpg" height="250px" width="250px" alt="Caminhão">
-                    </div>
-                    <div class="slide">
-                        <img src="img/scania.jpg" height="250px" width="250px" alt="Caminhão">
-                    </div>
-                    <div class="slide">
-                        <img src="img/volvo.jpg" height="250px" width="250px" alt="Caminhão">
-                    </div>
-                    <div class="slide">
-                        <img src="img/scania.jpg" height="250px" width="250px" alt="Caminhão">
-                    </div>
-                    <div class="slide">
-                        <img src="img/volvo.jpg" height="250px" width="250px" alt="Caminhão">
-                    </div>
-                    <div class="slide">
-                        <img src="img/scania.jpg" height="250px" width="250px" alt="Caminhão">
-                    </div>
-                </div>
-            </div>
+        <div class="swiper-container">
+    <div class="swiper">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide"><img src="img/volvo.jpg" alt="Caminhão Volvo"></div>
+            <div class="swiper-slide"><img src="img/scania.jpg" alt="Caminhão Scania"></div>
+            <div class="swiper-slide"><img src="img/volvo.jpg" alt="Caminhão Volvo"></div>
+            <div class="swiper-slide"><img src="img/scania.jpg" alt="Caminhão Scania"></div>
+            <div class="swiper-slide"><img src="img/volvo.jpg" alt="Caminhão Volvo"></div>
+            <div class="swiper-slide"><img src="img/scania.jpg" alt="Caminhão Scania"></div>
         </div>
+        
+        <div class="swiper-pagination"></div>
+
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </div>
+</div>
 
         <div class="stats-grid">
             <div class="stat-card">
@@ -128,6 +122,44 @@ $stats['valor_total'] = mysqli_fetch_array($result)['total'] ?? 0;
             <a href="#" class="button"><?php echo $labels["add_new_quote"]; ?></a>
         </div>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="js/language.js"></script>
+    <script>
+  const swiper = new Swiper('.swiper', {
+    // Ativa o modo de loop infinito
+    loop: true,
+
+    // Define o autoplay
+    autoplay: {
+      delay: 3500, // Tempo em milissegundos (3.5 segundos)
+      disableOnInteraction: false, // Não para o autoplay após interação do usuário
+    },
+
+    // Ativa a paginação (bolinhas)
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true, // Permite clicar nas bolinhas para navegar
+    },
+
+    // Ativa os botões de navegação (setas)
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+
+    // Efeitos e espaçamento (opcional, mas recomendado)
+    effect: 'coverflow', // Efeito 3D
+    grabCursor: true,
+    centeredSlides: true,
+    slidesPerView: 'auto',
+    coverflowEffect: {
+      rotate: 50,
+      stretch: 0,
+      depth: 100,
+      modifier: 1,
+      slideShadows: true,
+    },
+  });
+</script>
 </body>
 </html>
