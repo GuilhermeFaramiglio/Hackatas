@@ -81,6 +81,34 @@ return [
     "feature_4" => "Multilingual support: English, Arabic, and French.",
     "contact_title" => "Get in Touch",
     "contact_subtitle" => "For more information, please contact us.",
-    "footer_copyright" => "&copy; 2025 MENA Freight Hub. All rights reserved."
+    "footer_copyright" => "&copy; 2025 MENA Freight Hub. All rights reserved.",
+
+        // ... (outras chaves)
+    "companies_title" => "Companies",
+    "addresses_title" => "Addresses",
+    "country_label" => "Country:",
+    "city_label" => "City:",
+    "street_label" => "Street:",
+    "number_label" => "Number:",
+    "add_address_btn" => "Add Address",
+    "remove_address_btn" => "Remove Address",
+    "view_addresses_btn" => "View Addresses",
+
+       
+    "vehicles_title" => "Vehicles",
+    "vehicle_registration" => "Vehicle Registration",
+    "vehicle_model_label" => "Model:",
+    "vehicle_brand_label" => "Brand:",
+    "vehicle_plate_label" => "Plate/ID:",
+    "register_vehicle_btn" => "Register Vehicle",
+    "registered_vehicles_list" => "Registered Vehicles",
+    "model" => "Model",
+    "brand" => "Brand",
+    "vehicle_deleted" => "Vehicle deleted successfully!",
+    "vehicle_delete_error" => "Error deleting vehicle.",
+    "vehicle_updated" => "Vehicle updated successfully!",
+    "vehicle_update_error" => "Error updating vehicle.",
+    "vehicle_registered" => "Vehicle registered successfully!",
+    "vehicle_error" => "Error registering vehicle.",
 ];
 ?>

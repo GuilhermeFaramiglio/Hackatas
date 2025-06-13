@@ -5,17 +5,16 @@ session_start();
 $lang = $_COOKIE["lang"] ?? "en";
 $labels = include "$lang.php";
 
+// A lógica de verificação de sessão foi movida para depois da carga de $labels
+// para que a mensagem de erro possa ser traduzida, se desejado.
 if (isset($_SESSION['idusuario'])) {
     $idusuario = $_SESSION['idusuario'];
-    $sql = "SELECT USU_NOME FROM usuario WHERE USU_ID = ?";
-    $stmt = mysqli_prepare($link, $sql);
-    mysqli_stmt_bind_param($stmt, 'i', $idusuario);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-    $nomeusuario = mysqli_fetch_array($result)['USU_NOME'] ?? 'Usuário';
-    mysqli_stmt_close($stmt);
+    // Esta consulta foi simplificada em uma etapa anterior, assumindo que o nome já está na sessão
+    $nomeusuario = $_SESSION['nomeusuario'] ?? 'Usuário';
 } else {
-    echo "<script>alert('Usuário não logado!');</script>";
+    // Exemplo de como usar a tradução no alerta
+    $alert_msg = $labels["not_logged_in_error"] ?? 'Usuário não logado!';
+    echo "<script>alert('{$alert_msg}');</script>";
     echo "<script>window.location.href = 'login.php';</script>";
     exit;
 }
@@ -73,13 +72,15 @@ if (isset($_POST["edit_id"]) && !empty($_POST["edit_id"])) {
         // Insere novos
         $sql_end = "INSERT INTO endereco (END_PAIS, END_CIDADE, END_RUA, END_NUMERO, END_FK_EMPRESA_ID) VALUES (?, ?, ?, ?, ?)";
         foreach ($_POST["end_pais"] as $i => $pais) {
-            $cidade = $_POST["end_cidade"][$i];
-            $rua = $_POST["end_rua"][$i];
-            $numero = $_POST["end_numero"][$i];
-            if ($stmt_end = mysqli_prepare($link, $sql_end)) {
-                mysqli_stmt_bind_param($stmt_end, "ssssi", $pais, $cidade, $rua, $numero, $edit_id);
-                mysqli_stmt_execute($stmt_end);
-                mysqli_stmt_close($stmt_end);
+            if(!empty($pais)) { // Garante que não insere endereços vazios
+                $cidade = $_POST["end_cidade"][$i];
+                $rua = $_POST["end_rua"][$i];
+                $numero = $_POST["end_numero"][$i];
+                if ($stmt_end = mysqli_prepare($link, $sql_end)) {
+                    mysqli_stmt_bind_param($stmt_end, "ssssi", $pais, $cidade, $rua, $numero, $edit_id);
+                    mysqli_stmt_execute($stmt_end);
+                    mysqli_stmt_close($stmt_end);
+                }
             }
         }
     }
@@ -96,16 +97,18 @@ elseif ($_SERVER["REQUEST_METHOD"] == "POST" && empty($_POST["edit_id"]) && empt
             $empresa_id = mysqli_insert_id($link);
             $success_msg = $labels["company_registered"] ?? "Empresa cadastrada com sucesso!";
 
-            if (!empty($_POST["end_pais"]) && is_array($_POST["end_pais"])) {
+            if (!empty($_POST["end_pais"][0]) && is_array($_POST["end_pais"])) {
                 foreach ($_POST["end_pais"] as $i => $end_pais) {
-                    $end_cidade = $_POST["end_cidade"][$i];
-                    $end_rua = $_POST["end_rua"][$i];
-                    $end_numero = $_POST["end_numero"][$i];
-                    $sql_end = "INSERT INTO endereco (END_PAIS, END_CIDADE, END_RUA, END_NUMERO, END_FK_EMPRESA_ID) VALUES (?, ?, ?, ?, ?)";
-                    if ($stmt_end = mysqli_prepare($link, $sql_end)) {
-                        mysqli_stmt_bind_param($stmt_end, "ssssi", $end_pais, $end_cidade, $end_rua, $end_numero, $empresa_id);
-                        mysqli_stmt_execute($stmt_end);
-                        mysqli_stmt_close($stmt_end);
+                    if(!empty($end_pais)) { // Garante que não insere endereços vazios
+                        $end_cidade = $_POST["end_cidade"][$i];
+                        $end_rua = $_POST["end_rua"][$i];
+                        $end_numero = $_POST["end_numero"][$i];
+                        $sql_end = "INSERT INTO endereco (END_PAIS, END_CIDADE, END_RUA, END_NUMERO, END_FK_EMPRESA_ID) VALUES (?, ?, ?, ?, ?)";
+                        if ($stmt_end = mysqli_prepare($link, $sql_end)) {
+                            mysqli_stmt_bind_param($stmt_end, "ssssi", $end_pais, $end_cidade, $end_rua, $end_numero, $empresa_id);
+                            mysqli_stmt_execute($stmt_end);
+                            mysqli_stmt_close($stmt_end);
+                        }
                     }
                 }
             }
@@ -124,46 +127,44 @@ $result = mysqli_query($link, $sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Empresas - MENA Freight Hub</title>
+    <title><?php echo $labels["companies_title"] ?? "Empresas"; ?> - MENA Freight Hub</title>
     <link rel="stylesheet" href="css/style.css">
-    <style>
-        
-    </style>
     <script>
     // Função para adicionar bloco de endereço
     function adicionarEndereco(valores = {}) {
         const container = document.getElementById('enderecos-container');
-        const idx = container.children.length;
         const block = document.createElement('div');
         block.className = 'endereco-block';
 
+        // Aplicando addslashes em todas as traduções dentro do JavaScript
         block.innerHTML = `
+            <hr>
             <div class="form-group">
-                <label>País:</label>
-                <input type="text" name="end_pais[]" required value="${valores.end_pais || ''}">
+                <label><?php echo addslashes($labels["country_label"] ?? "País:"); ?></label>
+                <input type="text" name="end_pais[]" value="${valores.end_pais || ''}">
             </div>
             <div class="form-group">
-                <label>Cidade:</label>
-                <input type="text" name="end_cidade[]" required value="${valores.end_cidade || ''}">
+                <label><?php echo addslashes($labels["city_label"] ?? "Cidade:"); ?></label>
+                <input type="text" name="end_cidade[]" value="${valores.end_cidade || ''}">
             </div>
             <div class="form-group">
-                <label>Rua:</label>
-                <input type="text" name="end_rua[]" required value="${valores.end_rua || ''}">
+                <label><?php echo addslashes($labels["street_label"] ?? "Rua:"); ?></label>
+                <input type="text" name="end_rua[]" value="${valores.end_rua || ''}">
             </div>
             <div class="form-group">
-                <label>Número:</label>
-                <input type="text" name="end_numero[]" required value="${valores.end_numero || ''}">
+                <label><?php echo addslashes($labels["number_label"] ?? "Número:"); ?></label>
+                <input type="text" name="end_numero[]" value="${valores.end_numero || ''}">
             </div>
-            <button type="button" class="remove-endereco-btn" onclick="this.parentNode.remove()">Remover Endereço</button>
+            <button type="button" class="remove-endereco-btn" onclick="this.parentNode.remove()"><?php echo addslashes($labels["remove_address_btn"] ?? "Remover Endereço"); ?></button>
         `;
         container.appendChild(block);
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        const defaultSubmitText = '<?php echo $labels["register_company_btn"] ?? "Cadastrar Empresa"; ?>';
-        const editSubmitText = '<?php echo $labels["edit"] ?? "Editar"; ?>';
+        // Aplicando addslashes nas variáveis de texto
+        const defaultSubmitText = '<?php echo addslashes($labels["register_company_btn"] ?? "Cadastrar Empresa"); ?>';
+        const editSubmitText = '<?php echo addslashes($labels["edit"] ?? "Editar"); ?>';
 
-        // Adiciona o primeiro endereço ao carregar
         if (document.getElementById('enderecos-container').children.length === 0) {
             adicionarEndereco();
         }
@@ -181,23 +182,25 @@ $result = mysqli_query($link, $sql);
                 document.getElementById('emp_telefone').value = this.dataset.telefone;
                 document.getElementById('edit_id').value = this.dataset.id;
                 document.getElementById('submit-btn').textContent = editSubmitText;
-                document.querySelectorAll('#empresa-form input, #btn-add-endereco').forEach(el => el.removeAttribute('disabled'));
+                document.querySelectorAll('#empresa-form input, #empresa-form button').forEach(el => el.removeAttribute('disabled'));
 
-                // Buscar endereços para edição
                 fetch(`buscar_enderecos.php?empresa_id=${this.dataset.id}`)
                 .then(r => r.json())
                 .then(data => {
                     const cont = document.getElementById('enderecos-container');
                     cont.innerHTML = '';
-                    if (data.length === 0) adicionarEndereco();
-                    data.forEach(e => {
-                        adicionarEndereco({
-                            end_pais: e.END_PAIS,
-                            end_cidade: e.END_CIDADE,
-                            end_rua: e.END_RUA,
-                            end_numero: e.END_NUMERO
+                    if (data.length === 0) {
+                        adicionarEndereco();
+                    } else {
+                        data.forEach(e => {
+                            adicionarEndereco({
+                                end_pais: e.END_PAIS,
+                                end_cidade: e.END_CIDADE,
+                                end_rua: e.END_RUA,
+                                end_numero: e.END_NUMERO
+                            });
                         });
-                    });
+                    }
                 });
             });
         });
@@ -209,23 +212,25 @@ $result = mysqli_query($link, $sql);
                 document.getElementById('emp_cnpj').value = btn.dataset.cnpj;
                 document.getElementById('emp_telefone').value = btn.dataset.telefone;
                 document.getElementById('edit_id').value = '';
-                // Buscar endereços
+                
                 fetch(`buscar_enderecos.php?empresa_id=${btn.dataset.id}`)
                 .then(r => r.json())
                 .then(data => {
                     const cont = document.getElementById('enderecos-container');
                     cont.innerHTML = '';
-                    if (data.length === 0) adicionarEndereco();
-                    data.forEach(e => {
-                        adicionarEndereco({
-                            end_pais: e.END_PAIS,
-                            end_cidade: e.END_CIDADE,
-                            end_rua: e.END_RUA,
-                            end_numero: e.END_NUMERO
+                    if (data.length === 0) {
+                        adicionarEndereco();
+                    } else {
+                        data.forEach(e => {
+                            adicionarEndereco({
+                                end_pais: e.END_PAIS,
+                                end_cidade: e.END_CIDADE,
+                                end_rua: e.END_RUA,
+                                end_numero: e.END_NUMERO
+                            });
                         });
-                    });
-                    // Desabilitar todos os campos
-                    document.querySelectorAll('#empresa-form input, #empresa-form button[type=submit], #btn-add-endereco, .remove-endereco-btn').forEach(function(el) {
+                    }
+                    document.querySelectorAll('#empresa-form input, #empresa-form button').forEach(function(el) {
                         el.setAttribute('disabled', 'true');
                     });
                     document.getElementById('clear-btn').removeAttribute('disabled');
@@ -238,14 +243,14 @@ $result = mysqli_query($link, $sql);
             document.getElementById('empresa-form').reset();
             document.getElementById('edit_id').value = '';
             document.getElementById('submit-btn').textContent = defaultSubmitText;
-            document.querySelectorAll('#empresa-form input, #empresa-form button, #btn-add-endereco, .remove-endereco-btn').forEach(el => el.removeAttribute('disabled'));
-            // Limpa e adiciona um endereço vazio
+            document.querySelectorAll('#empresa-form input, #empresa-form button').forEach(el => el.removeAttribute('disabled'));
+            
             const cont = document.getElementById('enderecos-container');
             cont.innerHTML = '';
             adicionarEndereco();
         });
     });
-    </script>
+</script>
 </head>
 <body style="background-size: cover; background-attachment: fixed; background-image: url('img/marcasp.png');">
 <header>
@@ -253,6 +258,20 @@ $result = mysqli_query($link, $sql);
     <nav>
         <a href="dashboard.php">Dashboard</a>
         <a href="logout.php"><?php echo $labels["logout"]; ?></a>
+
+        <div class="seletor-idioma">
+            <div class="idioma-atual">
+                <span><?php echo strtoupper($lang); ?></span>
+                <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <div class="menu-idiomas">
+                <a href="#" onclick="setLanguage('en')"><img src="img/eng.webp" height="25px" width="25px">EN</a>
+                <a href="#" onclick="setLanguage('ar')"><img src="img/arabe.webp" height="25px" width="25px">AR</a>
+                <a href="#" onclick="setLanguage('fr')"><img src="img/France_Flag.PNG.webp" height="25px" width="25px">FR</a>
+            </div>
+        </div>
     </nav>
 </header>
 <main>
@@ -281,14 +300,17 @@ $result = mysqli_query($link, $sql);
             <input type="text" id="emp_telefone" name="emp_telefone" required>
         </div>
 
-        <h3 style="margin-top: 30px;">Endereços</h3>
+        <h3 style="margin-top: 30px; border-top: 1px solid #ccc; padding-top: 20px;"><?php echo $labels["addresses_title"] ?? "Endereços"; ?></h3>
         <div id="enderecos-container"></div>
-        <button type="button" id="btn-add-endereco"><?php echo $labels["add_address_btn"] ?? "Adicionar Endereço"; ?></button>
-        <button type="submit" id="submit-btn"><?php echo $labels["register_company_btn"] ?? "Cadastrar Empresa"; ?></button>
-        <button type="button" id="clear-btn"><?php echo $labels["clear_btn"] ?? "Limpar"; ?></button>
+        
+        <div style="margin-top: 20px;">
+            <button type="button" id="btn-add-endereco"><?php echo $labels["add_address_btn"] ?? "Adicionar Endereço"; ?></button>
+            <button type="submit" id="submit-btn"><?php echo $labels["register_company_btn"] ?? "Cadastrar Empresa"; ?></button>
+            <button type="button" id="clear-btn"><?php echo $labels["clear_btn"] ?? "Limpar"; ?></button>
+        </div>
     </form>
 
-    <h3><?php echo $labels["registered_companies_list"] ?? "Empresas Cadastradas"; ?></h3>
+    <h3 style="margin-top: 40px; border-top: 1px solid #ccc; padding-top: 20px;"><?php echo $labels["registered_companies_list"] ?? "Empresas Cadastradas"; ?></h3>
     <table>
         <thead>
             <tr>
@@ -321,12 +343,12 @@ $result = mysqli_query($link, $sql);
                         data-nome="<?php echo htmlspecialchars($row["emp_nome"]); ?>" 
                         data-cnpj="<?php echo htmlspecialchars($row["emp_cnpj"]); ?>" 
                         data-telefone="<?php echo htmlspecialchars($row["emp_telefone"]); ?>">
-                        Ver Endereços
+                        <?php echo $labels["view_addresses_btn"] ?? "Ver Endereços"; ?>
                     </button>
                     <form method="POST" class="delete-form" style="display:inline;">
                         <input type="hidden" name="delete_id" value="<?php echo $row["emp_id"]; ?>">
-                        <button type="submit" onclick="return confirm('<?php echo $labels["confirm_delete_message"] ?? "Tem certeza?"; ?>')">
-                            <?php echo $labels["delete"] ?? "Excluir"; ?>
+                       <button type="submit" onclick="return confirm('<?php echo addslashes($labels["confirm_delete_message"] ?? "Tem certeza?"); ?>')">
+                         <?php echo $labels["delete"] ?? "Excluir"; ?>
                         </button>
                     </form>
                 </td>
@@ -335,5 +357,6 @@ $result = mysqli_query($link, $sql);
         </tbody>
     </table>
 </main>
+<script src="js/language.js"></script>
 </body>
 </html>

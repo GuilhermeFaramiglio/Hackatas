@@ -7,15 +7,10 @@ $labels = include "$lang.php";
 
 if (isset($_SESSION['idusuario'])) {
     $idusuario = $_SESSION['idusuario'];
-    $sql = "SELECT USU_NOME FROM usuario WHERE USU_ID = ?";
-    $stmt = mysqli_prepare($link, $sql);
-    mysqli_stmt_bind_param($stmt, 'i', $idusuario);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-    $nomeusuario = mysqli_fetch_array($result)['USU_NOME'] ?? 'Usuário';
-    mysqli_stmt_close($stmt);
+    $nomeusuario = $_SESSION['nomeusuario'] ?? 'Usuário';
 } else {
-    echo "<script>alert('Usuário não logado!');</script>";
+    $alert_msg = $labels["not_logged_in_error"] ?? 'Usuário não logado!';
+    echo "<script>alert('{$alert_msg}');</script>";
     echo "<script>window.location.href = 'login.php';</script>";
     exit;
 }
@@ -41,7 +36,8 @@ if (isset($_POST["edit_id"]) && !empty($_POST["edit_id"])) {
     $edit_modelo = $_POST["vei_modelo"];
     $edit_marca = $_POST["vei_marca"];
     $edit_placa = $_POST["vei_placa"];
-    $sql = "UPDATE veiculo SET VEI_MODELO = ?, VEI_MARCA = ?, VAI_PLACA = ? WHERE VEI_ID = ?";
+    .
+    $sql = "UPDATE veiculo SET VEI_MODELO = ?, VEI_MARCA = ?, VEI_PLACA = ? WHERE VEI_ID = ?";
     if ($stmt = mysqli_prepare($link, $sql)) {
         mysqli_stmt_bind_param($stmt, "sssi", $edit_modelo, $edit_marca, $edit_placa, $edit_id);
         if (mysqli_stmt_execute($stmt)) {
@@ -57,7 +53,8 @@ elseif ($_SERVER["REQUEST_METHOD"] == "POST" && empty($_POST["edit_id"]) && empt
     $vei_modelo = $_POST["vei_modelo"];
     $vei_marca = $_POST["vei_marca"];
     $vei_placa = $_POST["vei_placa"];
-    $sql = "INSERT INTO veiculo (VEI_MODELO, VEI_MARCA, VAI_PLACA) VALUES (?, ?, ?)";
+    
+    $sql = "INSERT INTO veiculo (VEI_MODELO, VEI_MARCA, VEI_PLACA) VALUES (?, ?, ?)";
     if ($stmt = mysqli_prepare($link, $sql)) {
         mysqli_stmt_bind_param($stmt, "sss", $vei_modelo, $vei_marca, $vei_placa);
         if (mysqli_stmt_execute($stmt)) {
@@ -69,7 +66,8 @@ elseif ($_SERVER["REQUEST_METHOD"] == "POST" && empty($_POST["edit_id"]) && empt
     }
 }
 
-$sql = "SELECT VEI_ID, VEI_MODELO, VEI_MARCA, VAI_PLACA FROM veiculo ORDER BY VEI_ID ASC";
+
+$sql = "SELECT VEI_ID, VEI_MODELO, VEI_MARCA, VEI_PLACA FROM veiculo ORDER BY VEI_ID ASC";
 $result = mysqli_query($link, $sql);
 ?>
 <!DOCTYPE html>
@@ -77,15 +75,12 @@ $result = mysqli_query($link, $sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Veículos - MENA Freight Hub</title>
+    <title><?php echo $labels["vehicles_title"] ?? "Veículos"; ?> - MENA Freight Hub</title>
     <link rel="stylesheet" href="css/style.css">
-    <style>
-        /* Adicione estilos customizados se necessário */
-    </style>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const defaultSubmitText = '<?php echo $labels["register_vehicle_btn"] ?? "Cadastrar Veículo"; ?>';
-        const editSubmitText = '<?php echo $labels["edit"] ?? "Editar"; ?>';
+        const defaultSubmitText = '<?php echo addslashes($labels["register_vehicle_btn"] ?? "Cadastrar Veículo"); ?>';
+        const editSubmitText = '<?php echo addslashes($labels["edit"] ?? "Editar"); ?>';
 
         document.querySelectorAll('.edit-btn').forEach(function(btn) {
             btn.addEventListener('click', function(e) {
@@ -111,10 +106,24 @@ $result = mysqli_query($link, $sql);
 </head>
 <body style="background-size: cover; background-attachment: fixed; background-image: url('img/marcasp.png');">
 <header>
-    <h1><?php echo $labels["vehicle"] ?? "Veículos"; ?></h1>
+    <h1><?php echo $labels["vehicles_title"] ?? "Veículos"; ?></h1>
     <nav>
         <a href="dashboard.php">Dashboard</a>
         <a href="logout.php"><?php echo $labels["logout"]; ?></a>
+
+        <div class="seletor-idioma">
+            <div class="idioma-atual">
+                <span><?php echo strtoupper($lang); ?></span>
+                <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <div class="menu-idiomas">
+                <a href="#" onclick="setLanguage('en')"><img src="img/eng.webp" height="25px" width="25px">EN</a>
+                <a href="#" onclick="setLanguage('ar')"><img src="img/arabe.webp" height="25px" width="25px">AR</a>
+                <a href="#" onclick="setLanguage('fr')"><img src="img/France_Flag.PNG.webp" height="25px" width="25px">FR</a>
+            </div>
+        </div>
     </nav>
 </header>
 <main>
@@ -146,7 +155,7 @@ $result = mysqli_query($link, $sql);
         <button type="button" id="clear-btn"><?php echo $labels["clear_btn"] ?? "Limpar"; ?></button>
     </form>
 
-    <h3><?php echo $labels["registered_vehicles_list"] ?? "Veículos Cadastrados"; ?></h3>
+    <h3 style="margin-top: 40px; border-top: 1px solid #ccc; padding-top: 20px;"><?php echo $labels["registered_vehicles_list"] ?? "Veículos Cadastrados"; ?></h3>
     <table>
         <thead>
             <tr>
@@ -163,19 +172,19 @@ $result = mysqli_query($link, $sql);
                 <td><?php echo $row["VEI_ID"]; ?></td>
                 <td><?php echo htmlspecialchars($row["VEI_MODELO"]); ?></td>
                 <td><?php echo htmlspecialchars($row["VEI_MARCA"]); ?></td>
-                <td><?php echo htmlspecialchars($row["VAI_PLACA"]); ?></td>
+                <td><?php echo htmlspecialchars($row["VEI_PLACA"]); ?></td>
                 <td>
                     <button class="edit-btn" 
                         type="button"
                         data-id="<?php echo $row["VEI_ID"]; ?>" 
                         data-modelo="<?php echo htmlspecialchars($row["VEI_MODELO"]); ?>" 
                         data-marca="<?php echo htmlspecialchars($row["VEI_MARCA"]); ?>" 
-                        data-placa="<?php echo htmlspecialchars($row["VAI_PLACA"]); ?>">
+                        data-placa="<?php echo htmlspecialchars($row["VEI_PLACA"]); ?>">
                         <?php echo $labels["edit"] ?? "Editar"; ?>
                     </button>
                     <form method="POST" class="delete-form" style="display:inline;">
                         <input type="hidden" name="delete_id" value="<?php echo $row["VEI_ID"]; ?>">
-                        <button type="submit" onclick="return confirm('<?php echo $labels["confirm_delete_message"] ?? "Tem certeza?"; ?>')">
+                        <button type="submit" onclick="return confirm('<?php echo addslashes($labels["confirm_delete_message"] ?? "Tem certeza?"); ?>')">
                             <?php echo $labels["delete"] ?? "Excluir"; ?>
                         </button>
                     </form>
@@ -185,5 +194,6 @@ $result = mysqli_query($link, $sql);
         </tbody>
     </table>
 </main>
+<script src="js/language.js"></script>
 </body>
 </html>

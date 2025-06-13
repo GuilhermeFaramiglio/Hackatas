@@ -82,6 +82,34 @@ return [
     "feature_4" => "Support multilingue : Anglais, Arabe et Français.",
     "contact_title" => "Contactez-nous",
     "contact_subtitle" => "Pour plus d'informations, veuillez nous contacter.",
-    "footer_copyright" => "&copy; 2025 MENA Freight Hub. Tous droits réservés."
+    "footer_copyright" => "&copy; 2025 MENA Freight Hub. Tous droits réservés.",
+
+        // ... (outras chaves)
+    "companies_title" => "Entreprises",
+    "addresses_title" => "Adresses",
+    "country_label" => "Pays :",
+    "city_label" => "Ville :",
+    "street_label" => "Rue :",
+    "number_label" => "Numéro :",
+    "add_address_btn" => "Ajouter une Adresse",
+    "remove_address_btn" => "Supprimer l'Adresse",
+    "view_addresses_btn" => "Voir les Adresses",
+
+       
+    "vehicles_title" => "Véhicules",
+    "vehicle_registration" => "Enregistrement de Véhicule",
+    "vehicle_model_label" => "Modèle :",
+    "vehicle_brand_label" => "Marque :",
+    "vehicle_plate_label" => "Plaque/ID :",
+    "register_vehicle_btn" => "Enregistrer le Véhicule",
+    "registered_vehicles_list" => "Véhicules Enregistrés",
+    "model" => "Modèle",
+    "brand" => "Marque",
+    "vehicle_deleted" => "Véhicule supprimé avec succès !",
+    "vehicle_delete_error" => "Erreur de suppression du véhicule.",
+    "vehicle_updated" => "Véhicule mis à jour avec succès !",
+    "vehicle_update_error" => "Erreur de mise à jour du véhicule.",
+    "vehicle_registered" => "Véhicule enregistré avec succès !",
+    "vehicle_error" => "Erreur d'enregistrement du véhicule.",
 ];
 ?>
