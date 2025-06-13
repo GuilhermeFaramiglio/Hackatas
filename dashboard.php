@@ -111,7 +111,7 @@ $stats['valor_total'] = mysqli_fetch_array($result)['total'] ?? 0;
             <div class="stat-card">
                 <h3><?php echo $labels["generated_quotes"]; ?></h3>
                 <p class="stat-number"><?php echo $stats['orcamentos']; ?></p>
-                <a href="orcamentos/" class="button"><?php echo $labels["manage_quotes"]; ?></a>
+                <a href="cadorcamento.php" class="button"><?php echo $labels["manage_quotes"]; ?></a>
             </div>
             
             <div class="stat-card">
