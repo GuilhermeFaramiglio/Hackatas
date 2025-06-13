@@ -68,6 +68,20 @@ return [
     "company_updated" => "Entreprise mise à jour avec succès !",
     "company_update_error" => "Erreur de mise à jour.",
     "company_deleted" => "Entreprise supprimée avec succès !",
-    "company_delete_error" => "Erreur de suppression."
+    "company_delete_error" => "Erreur de suppression.",
+
+    // --- Chaves Página Inicial ---
+    "home_title" => "MENA Freight Hub - Plateforme Logistique B2B",
+    "hero_title" => "Votre Solution Complète pour la Gestion de Fret dans la Région MENA",
+    "hero_subtitle" => "MENA Freight Hub est une plateforme web robuste, conçue pour optimiser la gestion du transport de marchandises pour les entreprises multinationales au Moyen-Orient et en Afrique du Nord.",
+    "hero_button" => "Accéder au Portail Client",
+    "features_title" => "Caractéristiques Principales :",
+    "feature_1" => "Enregistrement et gestion d'entreprises avec plusieurs adresses.",
+    "feature_2" => "Contrôle détaillé des véhicules de la flotte.",
+    "feature_3" => "Demande et génération efficaces de devis de transport.",
+    "feature_4" => "Support multilingue : Anglais, Arabe et Français.",
+    "contact_title" => "Contactez-nous",
+    "contact_subtitle" => "Pour plus d'informations, veuillez nous contacter.",
+    "footer_copyright" => "&copy; 2025 MENA Freight Hub. Tous droits réservés."
 ];
 ?>
