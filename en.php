@@ -81,6 +81,17 @@ return [
     "feature_4" => "Multilingual support: English, Arabic, and French.",
     "contact_title" => "Get in Touch",
     "contact_subtitle" => "For more information, please contact us.",
-    "footer_copyright" => "&copy; 2025 MENA Freight Hub. All rights reserved."
+    "footer_copyright" => "&copy; 2025 MENA Freight Hub. All rights reserved.",
+
+        // ... (outras chaves)
+    "companies_title" => "Companies",
+    "addresses_title" => "Addresses",
+    "country_label" => "Country:",
+    "city_label" => "City:",
+    "street_label" => "Street:",
+    "number_label" => "Number:",
+    "add_address_btn" => "Add Address",
+    "remove_address_btn" => "Remove Address",
+    "view_addresses_btn" => "View Addresses"
 ];
 ?>

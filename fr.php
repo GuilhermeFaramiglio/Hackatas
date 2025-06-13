@@ -82,6 +82,17 @@ return [
     "feature_4" => "Support multilingue : Anglais, Arabe et Français.",
     "contact_title" => "Contactez-nous",
     "contact_subtitle" => "Pour plus d'informations, veuillez nous contacter.",
-    "footer_copyright" => "&copy; 2025 MENA Freight Hub. Tous droits réservés."
+    "footer_copyright" => "&copy; 2025 MENA Freight Hub. Tous droits réservés.",
+
+        // ... (outras chaves)
+    "companies_title" => "Entreprises",
+    "addresses_title" => "Adresses",
+    "country_label" => "Pays :",
+    "city_label" => "Ville :",
+    "street_label" => "Rue :",
+    "number_label" => "Numéro :",
+    "add_address_btn" => "Ajouter une Adresse",
+    "remove_address_btn" => "Supprimer l'Adresse",
+    "view_addresses_btn" => "Voir les Adresses"
 ];
 ?>

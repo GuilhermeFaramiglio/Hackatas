@@ -82,6 +82,17 @@ return [
     "feature_4" => "دعم متعدد اللغات: الإنجليزية، العربية، والفرنسية.",
     "contact_title" => "تواصل معنا",
     "contact_subtitle" => "لمزيد من المعلومات، يرجى التواصل معنا.",
-    "footer_copyright" => "&copy; 2025 مركز شحن الشرق الأوسط وشمال أفريقيا. جميع الحقوق محفوظة."
+    "footer_copyright" => "&copy; 2025 مركز شحن الشرق الأوسط وشمال أفريقيا. جميع الحقوق محفوظة.",
+
+        // ... (outras chaves)
+    "companies_title" => "الشركات",
+    "addresses_title" => "العناوين",
+    "country_label" => "البلد:",
+    "city_label" => "المدينة:",
+    "street_label" => "الشارع:",
+    "number_label" => "الرقم:",
+    "add_address_btn" => "إضافة عنوان",
+    "remove_address_btn" => "إزالة العنوان",
+    "view_addresses_btn" => "عرض العناوين"
 ];
 ?>
