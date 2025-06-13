@@ -36,7 +36,7 @@ if (isset($_POST["edit_id"]) && !empty($_POST["edit_id"])) {
     $edit_modelo = $_POST["vei_modelo"];
     $edit_marca = $_POST["vei_marca"];
     $edit_placa = $_POST["vei_placa"];
-    .
+    
     $sql = "UPDATE veiculo SET VEI_MODELO = ?, VEI_MARCA = ?, VEI_PLACA = ? WHERE VEI_ID = ?";
     if ($stmt = mysqli_prepare($link, $sql)) {
         mysqli_stmt_bind_param($stmt, "sssi", $edit_modelo, $edit_marca, $edit_placa, $edit_id);
