@@ -322,47 +322,68 @@ input[type="number"] {
     display: block;
 }
 
-/* Container do carrossel */
-.carrossel-container {
+/* --- Estilos para o Carrossel Swiper.js --- */
+
+/* O container que centraliza o carrossel */
+.swiper-container {
     width: 100%;
-    max-width: 1000px;
-    margin: 20px 0;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    padding: 10px 0;
+    padding: 2rem 0;
 }
 
-/* Esconde a barra no Chrome/Safari */
-.carrossel-container::-webkit-scrollbar {
-    display: none;
+/* O componente principal do Swiper */
+.swiper {
+    width: 100%;
+    height: 300px; /* Altura do carrossel */
+    padding: 0 50px; /* Deixa espaço para as setas nas laterais */
 }
 
-/* Slides do carrossel */
-.carrossel {
+/* Estilo de cada slide */
+.swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
     display: flex;
-    width: max-content;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px; /* Bordas arredondadas */
+    overflow: hidden; /* Garante que a imagem não saia das bordas */
 }
 
-.slides {
-    display: flex;
-    gap: 15px;
-}
-
-.slide {
-    scroll-snap-align: start;
-    width: 250px;
-    height: 250px;
-    flex-shrink: 0;
-}
-
-.slide img {
+.swiper-slide img {
+    display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    border-radius: 6px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    object-fit: cover; /* Faz a imagem preencher o slide sem distorcer */
+}
+
+/* Estilização dos botões de navegação (setas) */
+.swiper-button-next,
+.swiper-button-prev {
+    color: #ffffff; /* Cor da seta */
+    background-color: transparent /* Fundo transparente */
+    width: 44px;
+    height: 44px;
+    border-radius: 50%; /* Deixa as setas redondas */
+    transition: background-color 0.2s ease;
+}
+
+
+
+/* Ajusta o tamanho do ícone da seta */
+.swiper-button-next::after,
+.swiper-button-prev::after {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Estilização da paginação (bolinhas) */
+.swiper-pagination-bullet {
+    background: #cccccc; /* Cor das bolinhas inativas */
+    opacity: 1;
+}
+
+.swiper-pagination-bullet-active {
+    background: #333; /* Cor da bolinha ativa (usando o preto do seu tema) */
 }
 
 /* cadastro emp */
