@@ -68,6 +68,19 @@ return [
     "company_updated" => "Company updated successfully!",
     "company_update_error" => "Error updating company.",
     "company_deleted" => "Company deleted successfully!",
-    "company_delete_error" => "Error deleting company."
+    "company_delete_error" => "Error deleting company.",
+    // --- Chaves Página Inicial ---
+    "home_title" => "MENA Freight Hub - B2B Logistics Platform",
+    "hero_title" => "Your Complete Solution for Freight Management in the MENA Region",
+    "hero_subtitle" => "MENA Freight Hub is a robust web platform designed to optimize freight management for multinational companies in the Middle East and North Africa.",
+    "hero_button" => "Access Customer Portal",
+    "features_title" => "Main Features:",
+    "feature_1" => "Registration and management of companies with multiple addresses.",
+    "feature_2" => "Detailed control of fleet vehicles.",
+    "feature_3" => "Efficiently request and generate transport quotes.",
+    "feature_4" => "Multilingual support: English, Arabic, and French.",
+    "contact_title" => "Get in Touch",
+    "contact_subtitle" => "For more information, please contact us.",
+    "footer_copyright" => "&copy; 2025 MENA Freight Hub. All rights reserved."
 ];
 ?>
