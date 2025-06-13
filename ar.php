@@ -93,6 +93,23 @@ return [
     "number_label" => "الرقم:",
     "add_address_btn" => "إضافة عنوان",
     "remove_address_btn" => "إزالة العنوان",
-    "view_addresses_btn" => "عرض العناوين"
+    "view_addresses_btn" => "عرض العناوين",
+
+        
+    "vehicles_title" => "المركبات",
+    "vehicle_registration" => "تسجيل مركبة",
+    "vehicle_model_label" => "الموديل:",
+    "vehicle_brand_label" => "العلامة التجارية:",
+    "vehicle_plate_label" => "رقم اللوحة/المعرف:",
+    "register_vehicle_btn" => "تسجيل مركبة",
+    "registered_vehicles_list" => "المركبات المسجلة",
+    "model" => "الموديل",
+    "brand" => "العلامة التجارية",
+    "vehicle_deleted" => "تم حذف المركبة بنجاح!",
+    "vehicle_delete_error" => "خطأ في حذف المركبة.",
+    "vehicle_updated" => "تم تحديث المركبة بنجاح!",
+    "vehicle_update_error" => "خطأ في تحديث المركبة.",
+    "vehicle_registered" => "تم تسجيل المركبة بنجاح!",
+    "vehicle_error" => "خطأ في تسجيل المركبة.",
 ];
 ?>

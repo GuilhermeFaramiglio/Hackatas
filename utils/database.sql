@@ -48,3 +48,7 @@ ALTER TABLE orcamento ADD CONSTRAINT FK_ORC_VEICULO FOREIGN KEY (ORC_FK_VEICULO_
 
 INSERT INTO usuario (USU_NOME, USU_SENHA)
 VALUES ("admin", "admin");
+
+
+-- Correção do nome da coluna de vai_placa para vei_placa
+ALTER TABLE veiculo CHANGE COLUMN vai_placa vei_placa VARCHAR(20) NOT NULL;
