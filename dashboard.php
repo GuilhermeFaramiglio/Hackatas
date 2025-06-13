@@ -45,7 +45,7 @@ $stats['valor_total'] = mysqli_fetch_array($result)['total'] ?? 0;
     <title><?php echo $labels['dashboard']; ?> - MENA Freight Hub</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body style="background-size: cover; background-attachment: fixed; background-image: url('img/marcasp.png');">
     <header>
         <h1><?php echo $labels["welcome"]; ?></h1>
         <nav>

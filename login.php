@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Login - MENA Freight Hub</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body style="background-size: cover; background-attachment: fixed; background-image: url('img/marcasp.png');">
     <div class="login-container">
         <h2><?php echo $labels["login"]; ?></h2>
         <form action="login.php" method="POST">

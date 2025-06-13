@@ -107,7 +107,7 @@ $result = mysqli_query($link, $sql);
 </script>
    
 </head>
-<body>
+<body style="background-size: cover; background-attachment: fixed; background-image: url('img/marcasp.png');">
     <header>
         <h1><?php echo $labels["company"]; ?></h1>
         <nav>
