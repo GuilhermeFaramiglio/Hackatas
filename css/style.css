@@ -360,17 +360,14 @@ input[type="number"] {
 .swiper-button-next,
 .swiper-button-prev {
     color: #ffffff; /* Cor da seta */
-    background-color: rgba(0, 0, 0, 0.4); /* Fundo semi-transparente */
+    background-color: transparent /* Fundo transparente */
     width: 44px;
     height: 44px;
     border-radius: 50%; /* Deixa as setas redondas */
     transition: background-color 0.2s ease;
 }
 
-.swiper-button-next:hover,
-.swiper-button-prev:hover {
-    background-color: rgba(0, 0, 0, 0.7); /* Fundo mais escuro no hover */
-}
+
 
 /* Ajusta o tamanho do ícone da seta */
 .swiper-button-next::after,
