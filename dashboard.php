@@ -117,15 +117,15 @@ $stats['valor_total'] = mysqli_fetch_array($result)['total'] ?? 0;
             <div class="stat-card">
                 <h3><?php echo $labels["total_value"]; ?></h3>
                 <p class="stat-number">$<?php echo number_format($stats['valor_total'], 2); ?></p>
-                <a href="orcamentos/" class="button"><?php echo $labels["view_reports"]; ?></a>
+                <a href="listaorcamentos.php" class="button"><?php echo $labels["view_reports"]; ?></a>
             </div>
         </div>
         
         <div class="quick-actions">
             <h3><?php echo $labels["quick_actions"]; ?></h3>
             <a href="cadempresa.php" class="button"><?php echo $labels["add_new_company"]; ?></a>
-            <a href="#" class="button"><?php echo $labels["add_new_vehicle"]; ?></a>
-            <a href="#" class="button"><?php echo $labels["add_new_quote"]; ?></a>
+            <a href="cadveiculo.php" class="button"><?php echo $labels["add_new_vehicle"]; ?></a>
+            <a href="cadorcamento.php" class="button"><?php echo $labels["add_new_quote"]; ?></a>
         </div>
     </main>
     <script src="js/language.js"></script>
