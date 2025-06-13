@@ -10,7 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $usuario = $_POST['txtUsuario'];
     $senha = $_POST['txtSenha'];
 
-    // Query segura que busca o ID e o NOME
     $sql = "SELECT USU_ID, USU_NOME FROM usuario WHERE USU_NOME = ? AND USU_SENHA = ?";
     
     if ($stmt = mysqli_prepare($link, $sql)) {
@@ -22,10 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (mysqli_num_rows($result) == 1) {
                 $user_data = mysqli_fetch_assoc($result);
                 
-                // --- A CORREÇÃO PRINCIPAL ESTÁ AQUI ---
-                // Salva o ID do usuário na sessão 'idusuario'
+                
                 $_SESSION['idusuario'] = $user_data['USU_ID']; 
-                // Salva o NOME do usuário na sessão 'nomeusuario'
                 $_SESSION['nomeusuario'] = $user_data['USU_NOME'];
                 
                 header("Location: dashboard.php");
@@ -34,7 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
     
-    // Se chegou até aqui, o login falhou
     $error_message = $labels['login_error'] ?? 'Usuário ou senha incorretos!';
     echo "<script>alert('{$error_message}'); window.location.href = 'login.php';</script>";
     exit;

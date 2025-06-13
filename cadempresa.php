@@ -20,7 +20,7 @@ if (isset($_SESSION['idusuario'])) {
     exit;
 }
 
-// Handle delete
+// Deleta o registro de empresa
 if (isset($_POST["delete_id"])) {
     $delete_id = intval($_POST["delete_id"]);
     $sql = "DELETE FROM empresa WHERE emp_id = ?";
@@ -35,7 +35,7 @@ if (isset($_POST["delete_id"])) {
     }
 }
 
-// Handle edit (update)
+// Edita o registro selecionado
 if (isset($_POST["edit_id"]) && !empty($_POST["edit_id"])) {
     $edit_id = intval($_POST["edit_id"]);
     $edit_nome = $_POST["emp_nome"];
@@ -52,7 +52,7 @@ if (isset($_POST["edit_id"]) && !empty($_POST["edit_id"])) {
         mysqli_stmt_close($stmt);
     }
 }
-// Handle insert (new)
+// Insere um novo registro no banco de dados (nova empresa)
 elseif ($_SERVER["REQUEST_METHOD"] == "POST" && empty($_POST["edit_id"]) && empty($_POST["delete_id"])) {
     $emp_nome = $_POST["emp_nome"];
     $emp_cnpj = $_POST["emp_cnpj"];
@@ -69,7 +69,7 @@ elseif ($_SERVER["REQUEST_METHOD"] == "POST" && empty($_POST["edit_id"]) && empt
     }
 }
 
-// Fetch all companies
+// Busca todas as empresas cadsatradas para exibição
 $sql = "SELECT emp_id, emp_nome, emp_cnpj, emp_telefone FROM empresa ORDER BY emp_id ASC";
 $result = mysqli_query($link, $sql);
 ?>
