@@ -105,7 +105,7 @@ $stats['valor_total'] = mysqli_fetch_array($result)['total'] ?? 0;
             <div class="stat-card">
                 <h3><?php echo $labels["registered_vehicles"]; ?></h3>
                 <p class="stat-number"><?php echo $stats['veiculos']; ?></p>
-                <a href="veiculos/" class="button"><?php echo $labels["manage_vehicles"]; ?></a>
+                <a href="cadveiculo.php" class="button"><?php echo $labels["manage_vehicles"]; ?></a>
             </div>
             
             <div class="stat-card">
