@@ -136,5 +136,36 @@ return [
     "budget_deleted" => "Budget deleted successfully!",
     "budget_updated" => "Budget updated successfully!",
     "budget_registered" => "Budget registered successfully!",
+
+
+
+    "trucks_carousel" => "Trucks",
+    "express_delivery_carousel" => "Express Delivery",
+    "transport_carousel" => "Transport",
+    "cargo_carousel" => "Cargo",
+    "warehouse_carousel" => "Warehouse",
+    "routes_carousel" => "Routes",
+
+
+
+    "road_transport_carousel" => "Road Transport",
+    "fleet_management_carousel" => "Fleet Management",
+    "route_optimization_carousel" => "Route Optimization",
+
+
+
+    "manage_vehicles_description" => "Manage your vehicles",
+
+
+
+    "manage_budgets_description" => "Manage your transport budgets",
+
+
+
+    "view_all_budgets_description" => "View all registered budgets",
+    "company_data_title" => "Company Data",
+    "contact_email" => "Email: info@menafreighthub.com",
+    "system_title" => "Transport Management System",
+    "language" => "Language",
+    "back_to_home" => "Back to Home",
 ];
-?>

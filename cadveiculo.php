@@ -5,13 +5,13 @@ session_start();
 $lang = $_COOKIE["lang"] ?? "en";
 $labels = include "$lang.php";
 
-if (isset($_SESSION['idusuario'])) {
-    $idusuario = $_SESSION['idusuario'];
-    $nomeusuario = $_SESSION['nomeusuario'] ?? 'Usuário';
+if (isset($_SESSION["idusuario"])) {
+    $idusuario = $_SESSION["idusuario"];
+    $nomeusuario = $_SESSION["nomeusuario"] ?? "Usuário";
 } else {
-    $alert_msg = $labels["not_logged_in_error"] ?? 'Usuário não logado!';
-    echo "<script>alert('{$alert_msg}');</script>";
-    echo "<script>window.location.href = 'login.php';</script>";
+    $alert_msg = $labels["not_logged_in_error"] ?? "Usuário não logado!";
+    echo "<script>alert(\'{$alert_msg}\');</script>";
+    echo "<script>window.location.href = \'login.php\';</script>";
     exit;
 }
 
@@ -76,6 +76,8 @@ $result = mysqli_query($link, $sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $labels["vehicles_title"] ?? "Veículos"; ?> - MENA Freight Hub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -104,96 +106,162 @@ $result = mysqli_query($link, $sql);
     });
     </script>
 </head>
-<body style="background-size: cover; background-attachment: fixed; background-image: url('img/marcasp.png');">
-<header>
-    <h1><?php echo $labels["vehicles_title"] ?? "Veículos"; ?></h1>
-    <nav>
-        <a href="dashboard.php">Dashboard</a>
-        <a href="logout.php"><?php echo $labels["logout"]; ?></a>
-
-        <div class="seletor-idioma">
-            <div class="idioma-atual">
-                <span><?php echo strtoupper($lang); ?></span>
-                <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-            </div>
-            <div class="menu-idiomas">
-                <a href="#" onclick="setLanguage('en')"><img src="img/eng.webp" height="25px" width="25px">EN</a>
-                <a href="#" onclick="setLanguage('ar')"><img src="img/arabe.webp" height="25px" width="25px">AR</a>
-                <a href="#" onclick="setLanguage('fr')"><img src="img/France_Flag.PNG.webp" height="25px" width="25px">FR</a>
+<body class="bg-dark text-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-darker border-bottom border-danger">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="dashboard.php">
+                <i class="fas fa-truck text-danger me-2 fs-4"></i>
+                <span class="text-danger fw-bold fs-4">MENA Freight Hub</span>
+            </a>
+            
+            <div class="navbar-nav ms-auto d-flex flex-row align-items-center">
+                <a href="dashboard.php" class="btn btn-outline-light me-3">
+                    <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                </a>
+                <a href="logout.php" class="btn btn-outline-danger me-3">
+                    <i class="fas fa-sign-out-alt me-1"></i><?php echo $labels["logout"]; ?>
+                </a>
+                
+                <div class="dropdown">
+                    <button class="btn btn-danger dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown">
+                        <i class="fas fa-globe me-1"></i><?php echo strtoupper($lang); ?>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark bg-darker">
+                        <li><a class="dropdown-item" href="#" onclick="setLanguage('en')">
+                            <img src="img/eng.webp" height="20" width="20" class="me-2">EN
+                        </a></li>
+                        <li><a class="dropdown-item" href="#" onclick="setLanguage('ar')">
+                            <img src="img/arabe.webp" height="20" width="20" class="me-2">AR
+                        </a></li>
+                        <li><a class="dropdown-item" href="#" onclick="setLanguage('fr')">
+                            <img src="img/France_Flag.PNG.webp" height="20" width="20" class="me-2">FR
+                        </a></li>
+                    </ul>
+                </div>
+                <script>
+                function setLanguage(lang) {
+                    document.cookie = "lang=" + lang + ";path=/";
+                    location.reload();
+                }
+                </script>
             </div>
         </div>
     </nav>
-</header>
-<main>
-    <h2><?php echo $labels["vehicle_registration"] ?? "Cadastro de Veículos"; ?></h2>
 
-    <?php if (isset($success_msg)): ?>
-        <div class="success"><?php echo $success_msg; ?></div>
-    <?php endif; ?>
-
-    <?php if (isset($error_msg)): ?>
-        <div class="error"><?php echo $error_msg; ?></div>
-    <?php endif; ?>
-
-    <form method="POST" id="veiculo-form" autocomplete="off">
-        <input type="hidden" name="edit_id" id="edit_id">
-        <div class="form-group">
-            <label for="vei_modelo"><?php echo $labels["vehicle_model_label"] ?? "Modelo:"; ?></label>
-            <input type="text" id="vei_modelo" name="vei_modelo" required>
+   
+    <div class="container-fluid py-4">
+        
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="page-header text-center">
+                    <h1 class="text-danger mb-2">
+                        <i class="fas fa-truck me-2"></i>
+                        <?php echo $labels["vehicle_registration"] ?? "Cadastro de Veículos"; ?>
+                    </h1>
+                    <p class="text-light-gray"><?php echo $labels["manage_vehicles_description"]; ?></p>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="vei_marca"><?php echo $labels["vehicle_brand_label"] ?? "Marca:"; ?></label>
-            <input type="text" id="vei_marca" name="vei_marca" required>
-        </div>
-        <div class="form-group">
-            <label for="vei_placa"><?php echo $labels["vehicle_plate_label"] ?? "Placa:"; ?></label>
-            <input type="text" id="vei_placa" name="vei_placa" required>
-        </div>
-        <button type="submit" id="submit-btn"><?php echo $labels["register_vehicle_btn"] ?? "Cadastrar Veículo"; ?></button>
-        <button type="button" id="clear-btn"><?php echo $labels["clear_btn"] ?? "Limpar"; ?></button>
-    </form>
 
-    <h3 style="margin-top: 40px; border-top: 1px solid #ccc; padding-top: 20px;"><?php echo $labels["registered_vehicles_list"] ?? "Veículos Cadastrados"; ?></h3>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th><?php echo $labels["model"] ?? "Modelo"; ?></th>
-                <th><?php echo $labels["brand"] ?? "Marca"; ?></th>
-                <th><?php echo $labels["plate"] ?? "Placa"; ?></th>
-                <th><?php echo $labels["actions"] ?? "Ações"; ?></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php while ($row = mysqli_fetch_assoc($result)): ?>
-            <tr>
-                <td><?php echo $row["VEI_ID"]; ?></td>
-                <td><?php echo htmlspecialchars($row["VEI_MODELO"]); ?></td>
-                <td><?php echo htmlspecialchars($row["VEI_MARCA"]); ?></td>
-                <td><?php echo htmlspecialchars($row["VEI_PLACA"]); ?></td>
-                <td>
-                    <button class="edit-btn" 
-                        type="button"
-                        data-id="<?php echo $row["VEI_ID"]; ?>" 
-                        data-modelo="<?php echo htmlspecialchars($row["VEI_MODELO"]); ?>" 
-                        data-marca="<?php echo htmlspecialchars($row["VEI_MARCA"]); ?>" 
-                        data-placa="<?php echo htmlspecialchars($row["VEI_PLACA"]); ?>">
-                        <?php echo $labels["edit"] ?? "Editar"; ?>
-                    </button>
-                    <form method="POST" class="delete-form" style="display:inline;">
-                        <input type="hidden" name="delete_id" value="<?php echo $row["VEI_ID"]; ?>">
-                        <button type="submit" onclick="return confirm('<?php echo addslashes($labels["confirm_delete_message"] ?? "Tem certeza?"); ?>')">
-                            <?php echo $labels["delete"] ?? "Excluir"; ?>
-                        </button>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                <div class="form-container p-4 rounded shadow-lg">
+                    <?php if (isset($success_msg)): ?>
+                        <div class="alert alert-success" role="alert"><?php echo $success_msg; ?></div>
+                    <?php endif; ?>
+                    <?php if (isset($error_msg)): ?>
+                        <div class="alert alert-danger" role="alert"><?php echo $error_msg; ?></div>
+                    <?php endif; ?>
+                    <form method="POST" id="veiculo-form" autocomplete="off">
+                        <input type="hidden" name="edit_id" id="edit_id">
+                        <div class="mb-3">
+                            <label for="vei_modelo" class="form-label text-light">
+                                <i class="fas fa-truck-pickup text-danger me-1"></i>
+                                <?php echo $labels["vehicle_model_label"] ?? "Modelo:"; ?>
+                            </label>
+                            <input type="text" id="vei_modelo" name="vei_modelo" class="form-control bg-darker text-light border-secondary" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="vei_marca" class="form-label text-light">
+                                <i class="fas fa-tags text-danger me-1"></i>
+                                <?php echo $labels["vehicle_brand_label"] ?? "Marca:"; ?>
+                            </label>
+                            <input type="text" id="vei_marca" name="vei_marca" class="form-control bg-darker text-light border-secondary" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="vei_placa" class="form-label text-light">
+                                <i class="fas fa-id-card text-danger me-1"></i>
+                                <?php echo $labels["vehicle_plate_label"] ?? "Placa:"; ?>
+                            </label>
+                            <input type="text" id="vei_placa" name="vei_placa" class="form-control bg-darker text-light border-secondary" required>
+                        </div>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="submit" id="submit-btn" class="btn btn-danger mt-3">
+                                <i class="fas fa-save me-1"></i><?php echo $labels["register_vehicle_btn"] ?? "Cadastrar Veículo"; ?>
+                            </button>
+                            <button type="button" id="clear-btn" class="btn btn-outline-danger mt-3">
+                                <i class="fas fa-eraser me-1"></i><?php echo $labels["clear_btn"] ?? "Limpar"; ?>
+                            </button>
+                        </div>
                     </form>
-                </td>
-            </tr>
-            <?php endwhile; ?>
-        </tbody>
-    </table>
-</main>
-<script src="js/language.js"></script>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="form-container p-4 rounded shadow-lg">
+                    <h3 class="text-danger mb-4 text-center">
+                        <i class="fas fa-list me-2"></i><?php echo $labels["registered_vehicles_list"] ?? "Veículos Cadastrados"; ?>
+                    </h3>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col"><?php echo $labels["model"] ?? "Modelo"; ?></th>
+                                    <th scope="col"><?php echo $labels["brand"] ?? "Marca"; ?></th>
+                                    <th scope="col"><?php echo $labels["plate"] ?? "Placa"; ?></th>
+                                    <th scope="col"><?php echo $labels["actions"] ?? "Ações"; ?></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php while ($row = mysqli_fetch_assoc($result)): ?>
+                                <tr>
+                                    <td><?php echo $row["VEI_ID"]; ?></td>
+                                    <td><?php echo htmlspecialchars($row["VEI_MODELO"]); ?></td>
+                                    <td><?php echo htmlspecialchars($row["VEI_MARCA"]); ?></td>
+                                    <td><?php echo htmlspecialchars($row["VEI_PLACA"]); ?></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-warning edit-btn" 
+                                            type="button"
+                                            data-id="<?php echo $row["VEI_ID"]; ?>" 
+                                            data-modelo="<?php echo htmlspecialchars($row["VEI_MODELO"]); ?>" 
+                                            data-marca="<?php echo htmlspecialchars($row["VEI_MARCA"]); ?>" 
+                                            data-placa="<?php echo htmlspecialchars($row["VEI_PLACA"]); ?>">
+                                            <i class="fas fa-edit me-1"></i><?php echo $labels["edit"] ?? "Editar"; ?>
+                                        </button>
+                                        <form method="POST" class="d-inline" onsubmit="return confirm(\'<?php echo addslashes($labels["confirm_delete_message"] ?? "Tem certeza?"); ?>\')">
+                                            <input type="hidden" name="delete_id" value="<?php echo $row["VEI_ID"]; ?>">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                <i class="fas fa-trash-alt me-1"></i><?php echo $labels["delete"] ?? "Excluir"; ?>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <?php endwhile; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/language.js"></script>
 </body>
 </html>
+

@@ -5,14 +5,10 @@ session_start();
 $lang = $_COOKIE["lang"] ?? "en";
 $labels = include "$lang.php";
 
-// A lógica de verificação de sessão foi movida para depois da carga de $labels
-// para que a mensagem de erro possa ser traduzida, se desejado.
 if (isset($_SESSION['idusuario'])) {
     $idusuario = $_SESSION['idusuario'];
-    // Esta consulta foi simplificada em uma etapa anterior, assumindo que o nome já está na sessão
     $nomeusuario = $_SESSION['nomeusuario'] ?? 'Usuário';
 } else {
-    // Exemplo de como usar a tradução no alerta
     $alert_msg = $labels["not_logged_in_error"] ?? 'Usuário não logado!';
     echo "<script>alert('{$alert_msg}');</script>";
     echo "<script>window.location.href = 'login.php';</script>";
@@ -128,34 +124,56 @@ $result = mysqli_query($link, $sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $labels["companies_title"] ?? "Empresas"; ?> - MENA Freight Hub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <script>
     // Função para adicionar bloco de endereço
     function adicionarEndereco(valores = {}) {
         const container = document.getElementById('enderecos-container');
         const block = document.createElement('div');
-        block.className = 'endereco-block';
+        block.className = 'endereco-block mb-4 p-3 border border-secondary rounded bg-darker';
 
         // Aplicando addslashes em todas as traduções dentro do JavaScript
         block.innerHTML = `
-            <hr>
-            <div class="form-group">
-                <label><?php echo addslashes($labels["country_label"] ?? "País:"); ?></label>
-                <input type="text" name="end_pais[]" value="${valores.end_pais || ''}">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="text-danger mb-0">
+                    <?php echo $labels["addresses_title"] ?? "Endereço"; ?>
+                </h6>
+                <button type="button" class="btn btn-sm btn-outline-danger remove-endereco-btn" onclick="this.parentNode.parentNode.remove()">
+                    <i class="fas fa-times me-1"></i><?php echo addslashes($labels["remove_address_btn"] ?? "Remover"); ?>
+                </button>
             </div>
-            <div class="form-group">
-                <label><?php echo addslashes($labels["city_label"] ?? "Cidade:"); ?></label>
-                <input type="text" name="end_cidade[]" value="${valores.end_cidade || ''}">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label text-light">
+                        <i class="fas fa-globe text-danger me-1"></i>
+                        <?php echo addslashes($labels["country_label"] ?? "País:"); ?>
+                    </label>
+                    <input type="text" name="end_pais[]" value="${valores.end_pais || ''}" class="form-control bg-darker text-light border-secondary">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-light">
+                        <i class="fas fa-city text-danger me-1"></i>
+                        <?php echo addslashes($labels["city_label"] ?? "Cidade:"); ?>
+                    </label>
+                    <input type="text" name="end_cidade[]" value="${valores.end_cidade || ''}" class="form-control bg-darker text-light border-secondary">
+                </div>
+                <div class="col-md-8">
+                    <label class="form-label text-light">
+                        <i class="fas fa-road text-danger me-1"></i>
+                        <?php echo addslashes($labels["street_label"] ?? "Rua:"); ?>
+                    </label>
+                    <input type="text" name="end_rua[]" value="${valores.end_rua || ''}" class="form-control bg-darker text-light border-secondary">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label text-light">
+                        <i class="fas fa-hashtag text-danger me-1"></i>
+                        <?php echo addslashes($labels["number_label"] ?? "Número:"); ?>
+                    </label>
+                    <input type="text" name="end_numero[]" value="${valores.end_numero || ''}" class="form-control bg-darker text-light border-secondary">
+                </div>
             </div>
-            <div class="form-group">
-                <label><?php echo addslashes($labels["street_label"] ?? "Rua:"); ?></label>
-                <input type="text" name="end_rua[]" value="${valores.end_rua || ''}">
-            </div>
-            <div class="form-group">
-                <label><?php echo addslashes($labels["number_label"] ?? "Número:"); ?></label>
-                <input type="text" name="end_numero[]" value="${valores.end_numero || ''}">
-            </div>
-            <button type="button" class="remove-endereco-btn" onclick="this.parentNode.remove()"><?php echo addslashes($labels["remove_address_btn"] ?? "Remover Endereço"); ?></button>
         `;
         container.appendChild(block);
     }
@@ -252,111 +270,203 @@ $result = mysqli_query($link, $sql);
     });
 </script>
 </head>
-<body style="background-size: cover; background-attachment: fixed; background-image: url('img/marcasp.png');">
-<header>
-    <h1><?php echo $labels["company"]; ?></h1>
-    <nav>
-        <a href="dashboard.php">Dashboard</a>
-        <a href="logout.php"><?php echo $labels["logout"]; ?></a>
-
-        <div class="seletor-idioma">
-            <div class="idioma-atual">
-                <span><?php echo strtoupper($lang); ?></span>
-                <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-            </div>
-            <div class="menu-idiomas">
-                <a href="#" onclick="setLanguage('en')"><img src="img/eng.webp" height="25px" width="25px">EN</a>
-                <a href="#" onclick="setLanguage('ar')"><img src="img/arabe.webp" height="25px" width="25px">AR</a>
-                <a href="#" onclick="setLanguage('fr')"><img src="img/France_Flag.PNG.webp" height="25px" width="25px">FR</a>
+<body class="bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-darker border-bottom border-danger">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="dashboard.php">
+                <i class="fas fa-truck text-danger me-2 fs-4"></i>
+                <span class="text-danger fw-bold fs-4">MENA Freight Hub</span>
+            </a>
+            
+            <div class="navbar-nav ms-auto d-flex flex-row align-items-center">
+                <a href="dashboard.php" class="btn btn-outline-light me-3">
+                    <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                </a>
+                <a href="logout.php" class="btn btn-outline-danger me-3">
+                    <i class="fas fa-sign-out-alt me-1"></i><?php echo $labels["logout"]; ?>
+                </a>
+                
+                <div class="dropdown">
+                    <button class="btn btn-danger dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown">
+                        <i class="fas fa-globe me-1"></i><?php echo strtoupper($lang); ?>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark bg-darker">
+                        <li><a class="dropdown-item" href="#" onclick="setLanguage('en')">
+                            <img src="img/eng.webp" height="20" width="20" class="me-2">EN
+                        </a></li>
+                        <li><a class="dropdown-item" href="#" onclick="setLanguage('ar')">
+                            <img src="img/arabe.webp" height="20" width="20" class="me-2">AR
+                        </a></li>
+                        <li><a class="dropdown-item" href="#" onclick="setLanguage('fr')">
+                            <img src="img/France_Flag.PNG.webp" height="20" width="20" class="me-2">FR
+                        </a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </nav>
-</header>
-<main>
-    <h2><?php echo $labels["company_registration"] ?? "Cadastro de Empresas"; ?></h2>
 
-    <?php if (isset($success_msg)): ?>
-        <div class="success"><?php echo $success_msg; ?></div>
-    <?php endif; ?>
-
-    <?php if (isset($error_msg)): ?>
-        <div class="error"><?php echo $error_msg; ?></div>
-    <?php endif; ?>
-
-    <form method="POST" id="empresa-form" autocomplete="off">
-        <input type="hidden" name="edit_id" id="edit_id">
-        <div class="form-group">
-            <label for="emp_nome"><?php echo $labels["company_name_label"] ?? "Nome da Empresa:"; ?></label>
-            <input type="text" id="emp_nome" name="emp_nome" required>
-        </div>
-        <div class="form-group">
-            <label for="emp_cnpj"><?php echo $labels["company_cnpj_label"] ?? "CNPJ:"; ?></label>
-            <input type="text" id="emp_cnpj" name="emp_cnpj" required>
-        </div>
-        <div class="form-group">
-            <label for="emp_telefone"><?php echo $labels["company_phone_label"] ?? "Telefone:"; ?></label>
-            <input type="text" id="emp_telefone" name="emp_telefone" required>
-        </div>
-
-        <h3 style="margin-top: 30px; border-top: 1px solid #ccc; padding-top: 20px;"><?php echo $labels["addresses_title"] ?? "Endereços"; ?></h3>
-        <div id="enderecos-container"></div>
+   
+    <div class="container-fluid py-4">
         
-        <div style="margin-top: 20px;">
-            <button type="button" id="btn-add-endereco"><?php echo $labels["add_address_btn"] ?? "Adicionar Endereço"; ?></button>
-            <button type="submit" id="submit-btn"><?php echo $labels["register_company_btn"] ?? "Cadastrar Empresa"; ?></button>
-            <button type="button" id="clear-btn"><?php echo $labels["clear_btn"] ?? "Limpar"; ?></button>
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="page-header text-center">
+                    <h1 class="text-danger mb-2">
+                        <i class="fas fa-building me-2"></i>
+                        <?php echo $labels["company_registration"] ?? "Cadastro de Empresas"; ?>
+                    </h1>
+                    
+                </div>
+            </div>
         </div>
-    </form>
 
-    <h3 style="margin-top: 40px; border-top: 1px solid #ccc; padding-top: 20px;"><?php echo $labels["registered_companies_list"] ?? "Empresas Cadastradas"; ?></h3>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th><?php echo $labels["name"] ?? "Nome"; ?></th>
-                <th><?php echo $labels["cnpj_id_header"] ?? "CNPJ/ID"; ?></th>
-                <th><?php echo $labels["phone"] ?? "Telefone"; ?></th>
-                <th><?php echo $labels["actions"] ?? "Ações"; ?></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php while ($row = mysqli_fetch_assoc($result)): ?>
-            <tr>
-                <td><?php echo $row["emp_id"]; ?></td>
-                <td><?php echo htmlspecialchars($row["emp_nome"]); ?></td>
-                <td><?php echo htmlspecialchars($row["emp_cnpj"]); ?></td>
-                <td><?php echo htmlspecialchars($row["emp_telefone"]); ?></td>
-                <td>
-                    <button class="edit-btn" 
-                        type="button"
-                        data-id="<?php echo $row["emp_id"]; ?>" 
-                        data-nome="<?php echo htmlspecialchars($row["emp_nome"]); ?>" 
-                        data-cnpj="<?php echo htmlspecialchars($row["emp_cnpj"]); ?>" 
-                        data-telefone="<?php echo htmlspecialchars($row["emp_telefone"]); ?>">
-                        <?php echo $labels["edit"] ?? "Editar"; ?>
-                    </button>
-                    <button class="view-address-btn" 
-                        type="button"
-                        data-id="<?php echo $row["emp_id"]; ?>" 
-                        data-nome="<?php echo htmlspecialchars($row["emp_nome"]); ?>" 
-                        data-cnpj="<?php echo htmlspecialchars($row["emp_cnpj"]); ?>" 
-                        data-telefone="<?php echo htmlspecialchars($row["emp_telefone"]); ?>">
-                        <?php echo $labels["view_addresses_btn"] ?? "Ver Endereços"; ?>
-                    </button>
-                    <form method="POST" class="delete-form" style="display:inline;">
-                        <input type="hidden" name="delete_id" value="<?php echo $row["emp_id"]; ?>">
-                       <button type="submit" onclick="return confirm('<?php echo addslashes($labels["confirm_delete_message"] ?? "Tem certeza?"); ?>')">
-                         <?php echo $labels["delete"] ?? "Excluir"; ?>
-                        </button>
+        
+        <?php if (isset($success_msg)): ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i><?php echo $success_msg; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        <?php endif; ?>
+
+        <?php if (isset($error_msg)): ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i><?php echo $error_msg; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        <?php endif; ?>
+
+        
+        <div class="row mb-5">
+            <div class="col-lg-8 mx-auto">
+                <div class="form-container">
+                    <h3 class="text-danger mb-4">
+                        <i class="fas fa-plus-circle me-2"></i>
+                        <?php echo $labels["company_data_title"] ?? "Dados da Empresa"; ?>
+                    </h3>
+                    
+                    <form method="POST" id="empresa-form" autocomplete="off">
+                        <input type="hidden" name="edit_id" id="edit_id">
+                        
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="emp_nome" class="form-label text-light">
+                                    <i class="fas fa-building text-danger me-1"></i>
+                                    <?php echo $labels["company_name_label"] ?? "Nome da Empresa:"; ?>
+                                </label>
+                                <input type="text" id="emp_nome" name="emp_nome" class="form-control bg-darker text-light border-secondary" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="emp_cnpj" class="form-label text-light">
+                                    <i class="fas fa-id-card text-danger me-1"></i>
+                                    <?php echo $labels["company_cnpj_label"] ?? "CNPJ:"; ?>
+                                </label>
+                                <input type="text" id="emp_cnpj" name="emp_cnpj" class="form-control bg-darker text-light border-secondary" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="emp_telefone" class="form-label text-light">
+                                    <i class="fas fa-phone text-danger me-1"></i>
+                                    <?php echo $labels["company_phone_label"] ?? "Telefone:"; ?>
+                                </label>
+                                <input type="text" id="emp_telefone" name="emp_telefone" class="form-control bg-darker text-light border-secondary" required>
+                            </div>
+                        </div>
+
+                        
+                        <div class="addresses-section mt-4">
+                            <h4 class="text-danger mb-3">
+                                <i class="fas fa-map-marker-alt me-2"></i>
+                                <?php echo $labels["addresses_title"] ?? "Endereços"; ?>
+                            </h4>
+                            <div id="enderecos-container"></div>
+                            
+                            <button type="button" id="btn-add-endereco" class="btn btn-outline-danger mb-3">
+                                <i class="fas fa-plus me-1"></i>
+                                <?php echo $labels["add_address_btn"] ?? "Adicionar Endereço"; ?>
+                            </button>
+                        </div>
+
+                        
+                        <div class="form-actions d-flex gap-2 flex-wrap">
+                            <button type="submit" id="submit-btn" class="btn btn-danger">
+                                <i class="fas fa-save me-1"></i>
+                                <?php echo $labels["register_company_btn"] ?? "Cadastrar Empresa"; ?>
+                            </button>
+                            <button type="button" id="clear-btn" class="btn btn-outline-secondary">
+                                <i class="fas fa-eraser me-1"></i>
+                                <?php echo $labels["clear_btn"] ?? "Limpar"; ?>
+                            </button>
+                        </div>
                     </form>
-                </td>
-            </tr>
-            <?php endwhile; ?>
-        </tbody>
-    </table>
-</main>
-<script src="js/language.js"></script>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="row">
+            <div class="col-12">
+                <div class="table-container">
+                    <h3 class="text-danger mb-4">
+                        <i class="fas fa-list me-2"></i>
+                        <?php echo $labels["registered_companies_list"] ?? "Empresas Cadastradas"; ?>
+                    </h3>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-dark table-striped table-hover">
+                            <thead class="table-danger">
+                                <tr>
+                                    <th><i class="fas fa-hashtag me-1"></i>ID</th>
+                                    <th><i class="fas fa-building me-1"></i><?php echo $labels["name"] ?? "Nome"; ?></th>
+                                    <th><i class="fas fa-id-card me-1"></i><?php echo $labels["cnpj_id_header"] ?? "CNPJ/ID"; ?></th>
+                                    <th><i class="fas fa-phone me-1"></i><?php echo $labels["phone"] ?? "Telefone"; ?></th>
+                                    <th><i class="fas fa-cogs me-1"></i><?php echo $labels["actions"] ?? "Ações"; ?></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php while ($row = mysqli_fetch_assoc($result)): ?>
+                                <tr>
+                                    <td><?php echo $row["emp_id"]; ?></td>
+                                    <td><?php echo htmlspecialchars($row["emp_nome"]); ?></td>
+                                    <td><?php echo htmlspecialchars($row["emp_cnpj"]); ?></td>
+                                    <td><?php echo htmlspecialchars($row["emp_telefone"]); ?></td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <button class="btn btn-sm btn-outline-warning edit-btn" 
+                                                type="button"
+                                                data-id="<?php echo $row["emp_id"]; ?>" 
+                                                data-nome="<?php echo htmlspecialchars($row["emp_nome"]); ?>" 
+                                                data-cnpj="<?php echo htmlspecialchars($row["emp_cnpj"]); ?>" 
+                                                data-telefone="<?php echo htmlspecialchars($row["emp_telefone"]); ?>">
+                                                <i class="fas fa-edit me-1"></i><?php echo $labels["edit"] ?? "Editar"; ?>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-info view-address-btn" 
+                                                type="button"
+                                                data-id="<?php echo $row["emp_id"]; ?>" 
+                                                data-nome="<?php echo htmlspecialchars($row["emp_nome"]); ?>" 
+                                                data-cnpj="<?php echo htmlspecialchars($row["emp_cnpj"]); ?>" 
+                                                data-telefone="<?php echo htmlspecialchars($row["emp_telefone"]); ?>">
+                                                <i class="fas fa-eye me-1"></i><?php echo $labels["view_addresses_btn"] ?? "Ver Endereços"; ?>
+                                            </button>
+                                            <form method="POST" class="delete-form d-inline">
+                                                <input type="hidden" name="delete_id" value="<?php echo $row["emp_id"]; ?>">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger" 
+                                                    onclick="return confirm('<?php echo addslashes($labels["confirm_delete_message"] ?? "Tem certeza?"); ?>')">
+                                                    <i class="fas fa-trash me-1"></i><?php echo $labels["delete"] ?? "Excluir"; ?>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <?php endwhile; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/language.js"></script>
 </body>
 </html>

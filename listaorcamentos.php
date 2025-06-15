@@ -5,10 +5,10 @@ session_start();
 $lang = $_COOKIE["lang"] ?? "en";
 $labels = include "$lang.php";
 
-if (!isset($_SESSION['idusuario'])) {
-    $alert_msg = $labels["not_logged_in_error"] ?? 'Usuário não logado!';
-    echo "<script>alert('{$alert_msg}');</script>";
-    echo "<script>window.location.href = 'login.php';</script>";
+if (!isset($_SESSION["idusuario"])) {
+    $alert_msg = $labels["not_logged_in_error"] ?? "Usuário não logado!";
+    echo "<script>alert(\'{$alert_msg}\');</script>";
+    echo "<script>window.location.href = \'login.php\';</script>";
     exit;
 }
 
@@ -25,105 +25,109 @@ $res_orc = mysqli_query($link, $sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $labels["budgets_title"] ?? "Orçamentos"; ?> - MENA Freight Hub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <style>
-        /* Estilos para os cards de orçamento */
-        .orcamento-cards-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 1.5rem;
-        }
-        .orcamento-card {
-            background: #fff;
-            border: 1px solid #dee2e6;
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        .orcamento-card h4 {
-            margin-top: 0;
-            margin-bottom: 1rem;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 0.5rem;
-            color: #0d6efd;
-        }
-        .orc-info {
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-        }
-        .orc-label {
-            font-weight: 600;
-            color: #333;
-        }
-        .orc-valor {
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid #eee;
-            font-size: 1.5rem;
-            font-weight: 700;
-            text-align: right;
-            color: #198754;
-        }
-    </style>
 </head>
-<body style="background-size: cover; background-attachment: fixed; background-image: url('img/marcasp.png');">
-<header>
-    <h1><?php echo $labels["budgets_title"] ?? "Orçamentos"; ?></h1>
-    <nav>
-        <a href="dashboard.php">Dashboard</a>
-        <a href="logout.php"><?php echo $labels["logout"]; ?></a>
-        <div class="seletor-idioma">
-            <div class="idioma-atual">
-                <span><?php echo strtoupper($lang); ?></span>
-                <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-            </div>
-            <div class="menu-idiomas">
-                <a href="#" onclick="setLanguage('en')"><img src="img/eng.webp" height="25px" width="25px">EN</a>
-                <a href="#" onclick="setLanguage('ar')"><img src="img/arabe.webp" height="25px" width="25px">AR</a>
-                <a href="#" onclick="setLanguage('fr')"><img src="img/France_Flag.PNG.webp" height="25px" width="25px">FR</a>
+<body class="bg-dark text-light">
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-darker border-bottom border-danger">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="dashboard.php">
+                <i class="fas fa-truck text-danger me-2 fs-4"></i>
+                <span class="text-danger fw-bold fs-4">MENA Freight Hub</span>
+            </a>
+            
+            <div class="navbar-nav ms-auto d-flex flex-row align-items-center">
+                <a href="dashboard.php" class="btn btn-outline-light me-3">
+                    <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                </a>
+                <a href="logout.php" class="btn btn-outline-danger me-3">
+                    <i class="fas fa-sign-out-alt me-1"></i><?php echo $labels["logout"]; ?>
+                </a>
+                
+                 <div class="dropdown">
+                    <button class="btn btn-danger dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown">
+                        <i class="fas fa-globe me-1"></i><?php echo strtoupper($lang); ?>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark bg-darker">
+                        <li><a class="dropdown-item" href="#" onclick="setLanguage('en')">
+                            <img src="img/eng.webp" height="20" width="20" class="me-2">EN
+                        </a></li>
+                        <li><a class="dropdown-item" href="#" onclick="setLanguage('ar')">
+                            <img src="img/arabe.webp" height="20" width="20" class="me-2">AR
+                        </a></li>
+                        <li><a class="dropdown-item" href="#" onclick="setLanguage('fr')">
+                            <img src="img/France_Flag.PNG.webp" height="20" width="20" class="me-2">FR
+                        </a></li>
+                    </ul>
+                </div>
+                <script>
+                function setLanguage(lang) {
+                    document.cookie = "lang=" + lang + ";path=/";
+                    location.reload();
+                }
+                </script>
             </div>
         </div>
     </nav>
-</header>
-<main>
-    <h2><?php echo $labels["registered_budgets_list"] ?? "Orçamentos Cadastrados"; ?></h2>
-    <div class="orcamento-cards-container">
-        <?php if(mysqli_num_rows($res_orc) > 0): ?>
-            <?php while ($row = mysqli_fetch_assoc($res_orc)): ?>
-                <div class="orcamento-card">
-                    <h4>#<?php echo $row["ORC_ID"]; ?> - <?php echo htmlspecialchars($row["emp_nome"]); ?></h4>
-                    <div class="orc-info">
-                        <span class="orc-label"><?php echo $labels["vehicle"] ?? "Veículo"; ?>:</span>
-                        <?php echo htmlspecialchars($row["VEI_MODELO"]); ?>
-                    </div>
-                    <div class="orc-info">
-                        <span class="orc-label"><?php echo $labels["origin"] ?? "Origem"; ?>:</span>
-                        <?php echo htmlspecialchars($row["ORC_ORIGEM"]); ?>
-                    </div>
-                    <div class="orc-info">
-                        <span class="orc-label"><?php echo $labels["destination"] ?? "Destino"; ?>:</span>
-                        <?php echo htmlspecialchars($row["ORC_DESTINO"]); ?>
-                    </div>
-                    <div class="orc-info">
-                        <span class="orc-label"><?php echo $labels["start_date"] ?? "Data Início"; ?>:</span>
-                        <?php echo htmlspecialchars(date("d/m/Y", strtotime($row["ORC_DATAINICIO"]))); ?>
-                    </div>
-                    <div class="orc-info">
-                        <span class="orc-label"><?php echo $labels["end_date"] ?? "Data Fim"; ?>:</span>
-                        <?php echo htmlspecialchars(date("d/m/Y", strtotime($row["ORC_DATAFIM"]))); ?>
-                    </div>
-                    <div class="orc-valor">
-                        USD <?php echo number_format($row["ORC_VALOR"], 2, ',', '.'); ?>
+
+    
+    <div class="container-fluid py-4">
+      
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="page-header text-center">
+                    <h1 class="text-danger mb-2">
+                        <i class="fas fa-file-invoice-dollar me-2"></i>
+                        <?php echo $labels["registered_budgets_list"] ?? "Orçamentos Cadastrados"; ?>
+                    </h1>
+                    <p class="text-light-gray"><?php echo $labels["view_all_budgets_description"]; ?></p>
+                </div>
+            </div>
+        </div>
+
+       
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="form-container p-4 rounded shadow-lg">
+                    <div class="table-responsive">
+                        <table class="table table-dark table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col"><?php echo $labels["header_company"] ?? "Empresa"; ?></th>
+                                    <th scope="col"><?php echo $labels["header_vehicle"] ?? "Veículo"; ?></th>
+                                    <th scope="col"><?php echo $labels["header_origin"] ?? "Origem"; ?></th>
+                                    <th scope="col"><?php echo $labels["header_destination"] ?? "Destino"; ?></th>
+                                    <th scope="col"><?php echo $labels["header_start_date"] ?? "Data Início"; ?></th>
+                                    <th scope="col"><?php echo $labels["header_end_date"] ?? "Data Fim"; ?></th>
+                                    <th scope="col"><?php echo $labels["header_value"] ?? "Valor (USD)"; ?></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php while ($row = mysqli_fetch_assoc($res_orc)): ?>
+                                <tr>
+                                    <td><?php echo $row["ORC_ID"]; ?></td>
+                                    <td><?php echo htmlspecialchars($row["emp_nome"]); ?></td>
+                                    <td><?php echo htmlspecialchars($row["VEI_MODELO"]); ?></td>
+                                    <td><?php echo htmlspecialchars($row["ORC_ORIGEM"]); ?></td>
+                                    <td><?php echo htmlspecialchars($row["ORC_DESTINO"]); ?></td>
+                                    <td><?php echo htmlspecialchars($row["ORC_DATAINICIO"]); ?></td>
+                                    <td><?php echo htmlspecialchars($row["ORC_DATAFIM"]); ?></td>
+                                    <td><?php echo number_format($row["ORC_VALOR"], 2); ?></td>
+                                </tr>
+                                <?php endwhile; ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            <?php endwhile; ?>
-        <?php else: ?>
-            <p><?php echo $labels['no_budgets_found'] ?? 'Nenhum orçamento encontrado.'; ?></p>
-        <?php endif; ?>
+            </div>
+        </div>
     </div>
-</main>
-<script src="js/language.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/language.js"></script>
 </body>
 </html>
+

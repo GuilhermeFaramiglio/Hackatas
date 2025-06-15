@@ -137,5 +137,28 @@ return [
     "budget_deleted" => "Devis supprimé avec succès !",
     "budget_updated" => "Devis mis à jour avec succès !",
     "budget_registered" => "Devis enregistré avec succès !",
+
+
+
+    "trucks_carousel" => "Camions",
+    "express_delivery_carousel" => "Livraison Express",
+    "transport_carousel" => "Transport",
+    "cargo_carousel" => "Fret",
+    "warehouse_carousel" => "Entrepôt",
+    "routes_carousel" => "Itinéraires",
+
+
+
+    "road_transport_carousel" => "Transport Routier",
+    "fleet_management_carousel" => "Gestion de Flotte",
+    "route_optimization_carousel" => "Optimisation d'Itinéraires",
+    "manage_vehicles_description" => "Gérez vos véhicules",
+    "manage_budgets_description" => "Gérez vos budgets de transport",
+
+    "view_all_budgets_description" => "Afficher tous les budgets enregistrés",
+    "company_data_title" => "Données de l'Entreprise",
+    "contact_email" => "Email: info@menafreighthub.com",
+    "system_title" => "Système de Gestion de Transport",
+    "language" => "Langue",
+    "back_to_home" => "Retour à la page d'accueil",
 ];
-?>

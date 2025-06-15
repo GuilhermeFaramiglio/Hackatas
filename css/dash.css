@@ -1,0 +1,195 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+body {
+    min-height: 100vh;
+    height: 100vh;
+    background: #35383d;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-size: cover;
+    background-attachment: fixed;
+    background-blend-mode: multiply;
+}
+.navbar {
+    background: #35383d !important;
+    border-bottom: none;
+    position: relative; /* Adicione esta linha */
+    z-index: 1050;      /* Adicione esta linha */
+}
+.container {
+    background: rgba(35, 39, 43, 0.96); /* Mais escuro, igual ao gradiente dos botões */
+    border-radius: 18px;
+    border: 2px solid #393e46;
+    padding: 2rem 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    color: #fff;
+    position: relative;
+    /* z-index: 1; */
+}
+.footer {
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+    border-top: 2px solid #b71c1c33;
+    background: none !important;
+}
+.dashboard-title, .quick-actions h3 {
+    color: #b71c1c;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+.btn-custom {
+    background: linear-gradient(90deg, #b71c1c 70%, #23272b 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: none;
+}
+.btn-custom:hover, .btn-custom:focus {
+    background: linear-gradient(90deg, #d32f2f 70%, #23272b 100%);
+    color: #fff;
+    box-shadow: none;
+}
+/* Customização do botão de linguagem para seguir o padrão dos outros botões */
+#langDropdown, .dropdown-toggle {
+    background: linear-gradient(90deg, #b71c1c 70%, #23272b 100%) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 0.5rem 1.2rem !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 1px !important;
+    transition: background 0.2s, box-shadow 0.2s !important;
+    box-shadow: none !important;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    z-index: 99999;
+}
+#langDropdown:hover, #langDropdown:focus, .dropdown-toggle:hover, .dropdown-toggle:focus {
+    background: linear-gradient(90deg, #d32f2f 70%, #23272b 100%) !important;
+    color: #fff !important;
+    box-shadow: none !important;
+}
+
+.dropdown-menu {
+    background: #23272b;
+    border-radius: 10px;
+    border: 2px solid #b71c1c33;
+    min-width: 8rem;
+    z-index: 9999999 !important; /* Aumente o valor aqui */
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    box-shadow: 0 8px 32px 8px rgba(0,0,0,0.35);
+}
+.navbar-nav {
+    position: relative;
+    z-index: 99999 !important;
+}
+.dropdown-item {
+    color: #fff;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    transition: background 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    z-index: 999999 !important; /* Garantir que os itens do dropdown fiquem acima de outros elementos */
+}
+.dropdown-item:hover, .dropdown-item:focus {
+    background: #b71c1c;
+    color: #fff;
+}
+.card {
+    background: rgba(35, 39, 43, 0.96); /* Mesma cor escura do container */
+    border: 2px solid #b71c1c33;
+    border-radius: 14px;
+    color: #fff;
+    transition: transform 0.15s, border-color 0.15s;
+}
+.card:hover {
+    transform: translateY(-6px) scale(1.03);
+    border-color: #b71c1c99;
+}
+.card-title,
+.card-body,
+.card .stat-number,
+.card .btn-custom {
+    color: #fff !important;
+}
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #b71c1c !important;
+}
+.swiper {
+    border-radius: 20px;
+    box-shadow: 0 4px 24px rgba(183,28,28,0.10);
+    margin-bottom: 2rem;
+    background: rgba(35, 39, 43, 0.92);
+}
+.swiper-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 260px;
+}
+.swiper-slide .icon-transport {
+    font-size: 5rem;
+    color: #b71c1c;
+    background: #23272b;
+    border-radius: 50%;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(183,28,28,0.08);
+}
+.swiper-pagination-bullet {
+    background: #b71c1c !important;
+}
+.swiper-button-next, .swiper-button-prev {
+    color: #b71c1c !important;
+}
+.quick-actions .btn-custom {
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+}
+@media (max-width: 991px) {
+    .dashboard-title { margin-top: 1rem; }
+    .swiper-slide { height: 180px; }
+    .swiper-slide .icon-transport { font-size: 3.5rem; padding: 1rem; }
+}
+@media (max-width: 767px) {
+    .dashboard-title { font-size: 1.5rem; }
+    .stat-number { font-size: 1.5rem; }
+    .swiper-slide { height: 120px; }
+    .swiper-slide .icon-transport { font-size: 2.2rem; padding: 0.5rem; }
+    #langDropdown, .dropdown-toggle {
+        font-size: 0.95rem !important;
+        padding: 0.4rem 0.8rem !important;
+    }
+}
+@media (max-width: 480px) {
+    .container {
+        padding: 0.7rem 0.3rem;
+        border-radius: 10px;
+    }
+    .dashboard-title, .quick-actions h3 {
+        font-size: 1.1rem;
+    }
+    #langDropdown, .dropdown-toggle {
+        font-size: 0.9rem !important;
+        padding: 0.3rem 0.6rem !important;
+    }
+}

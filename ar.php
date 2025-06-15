@@ -137,5 +137,26 @@ return [
     "budget_deleted" => "تم حذف الميزانية بنجاح!",
     "budget_updated" => "تم تحديث الميزانية بنجاح!",
     "budget_registered" => "تم تسجيل الميزانية بنجاح!",
+
+
+    "trucks_carousel" => "شاحنات",
+    "express_delivery_carousel" => "توصيل سريع",
+    "transport_carousel" => "نقل",
+    "cargo_carousel" => "شحن",
+    "warehouse_carousel" => "مستودع",
+    "routes_carousel" => "طرق",
+
+    "road_transport_carousel" => "النقل البري",
+    "fleet_management_carousel" => "إدارة الأسطول",
+    "route_optimization_carousel" => "تحسين المسار",
+
+    "manage_vehicles_description" => "إدارة المركبات الخاصة بك",
+    "manage_budgets_description" => "إدارة ميزانيات النقل الخاصة بك",
+    "view_all_budgets_description" => "عرض جميع الميزانيات المسجلة",
+    "company_data_title" => "بيانات الشركة",
+    "contact_email" => "Email: info@menafreighthub.com",
+    "system_title" => "نظام إدارة النقل",
+    "language" => "اللغة",
+    "back_to_home" => "العودة إلى الصفحة الرئيسية",
+
 ];
-?>

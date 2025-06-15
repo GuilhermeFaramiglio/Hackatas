@@ -1,0 +1,170 @@
+body {
+            background: #23272b;
+            color: #fff;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        header {
+            background: #23272b;
+            border-bottom: 3px solid #b71c1c;
+        }
+        h1 {
+            color: #b71c1c;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+        }
+        nav a, .idioma-atual span {
+            color: #fff;
+            text-decoration: none;
+            margin-right: 1rem;
+            font-weight: 500;
+        }
+        nav a.button, .button {
+            background: #b71c1c;
+            color: #fff !important;
+            border: none;
+            border-radius: 30px;
+            padding: 0.6rem 2rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: background 0.2s;
+            box-shadow: 0 2px 8px rgba(183,28,28,0.15);
+        }
+        nav a.button:hover, .button:hover {
+            background: #a31515;
+        }
+        .seletor-idioma {
+            position: relative;
+            display: inline-block;
+        }
+        .idioma-atual {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: #2d2d2d;
+            border-radius: 20px;
+            padding: 0.2rem 0.8rem;
+        }
+        .menu-idiomas {
+            display: none;
+            position: absolute;
+            top: 110%;
+            left: 0;
+            background: #2d2d2d;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            z-index: 10;
+            min-width: 120px;
+        }
+        .seletor-idioma:hover .menu-idiomas,
+        .seletor-idioma:focus-within .menu-idiomas {
+            display: block;
+        }
+        .menu-idiomas a {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        .menu-idiomas a:hover {
+            background: #b71c1c;
+        }
+        #hero {
+            background: linear-gradient(120deg, #b71c1c 0%, #23272b 100%);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 24px rgba(183,28,28,0.10);
+            
+        }
+        #hero a {
+            text-decoration: none;
+        }
+        #hero h2 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        #hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        #features {
+            margin: 3rem 0;
+        }
+        .feature-card {
+            background: #2d2d2d;
+            border: 2px solid #b71c1c;
+            border-radius: 18px;
+            box-shadow: 0 2px 12px rgba(183,28,28,0.08);
+            color: #fff;
+            padding: 2rem 1.2rem;
+            text-align: center;
+            transition: transform 0.15s, box-shadow 0.15s;
+            min-height: 200px;
+        }
+        .feature-card:hover {
+            transform: translateY(-6px) scale(1.03);
+            box-shadow: 0 6px 24px rgba(183,28,28,0.18);
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #b71c1c;
+            margin-bottom: 1rem;
+        }
+        #contact {
+            background: #2d2d2d;
+            border-radius: 16px;
+            padding: 2rem 1.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 2px 12px rgba(183,28,28,0.08);
+        }
+        footer {
+            background: #23272b;
+            color: #b0b0b0;
+            text-align: center;
+            padding: 1.2rem 0 0.5rem 0;
+            border-top: 2px solid #b71c1c;
+            margin-top: 2rem;
+        }
+        /* Carousel Customization */
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            filter: invert(1) grayscale(1) brightness(2);
+        }
+        .carousel-indicators [data-bs-target] {
+            background-color: #b71c1c;
+        }
+        .carousel-inner {
+            background: #23272b;
+            border-radius: 18px;
+            box-shadow: 0 2px 12px rgba(183,28,28,0.08);
+        }
+        .carousel-item {
+            text-align: center;
+            padding: 2.5rem 0;
+        }
+        .vehicle-icon {
+            font-size: 5rem;
+            color: #b71c1c;
+            margin-bottom: 1rem;
+        }
+        @media (max-width: 768px) {
+            #hero {
+                padding: 2rem 0.5rem;
+            }
+            .feature-card {
+                padding: 1.2rem 0.5rem;
+            }
+        }
