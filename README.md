@@ -72,4 +72,4 @@ O sistema implementa suporte multilíngue através de arquivos PHP que retornam 
 
 ---
 
-### 👨‍💻 Desenvolvido para o Hackathon Senac RIP 2025
+### 👨‍💻 Desenvolvido para o PRÉ-Hackathon Senac RIP 2025
